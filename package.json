@@ -11,7 +11,8 @@
     "native-base": "^2.12.1",
     "react": "16.8.6",
     "react-native": "0.60.0",
-    "react-native-navigation": "^2.22.3"
+    "react-native-navigation": "^2.22.3",
+    "react-redux": "^7.1.0"
   },
   "devDependencies": {
     "@babel/core": "7.5.0",
