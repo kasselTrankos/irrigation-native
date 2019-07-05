@@ -11,6 +11,7 @@
     "jetifier": "^1.6.1",
     "moment": "^2.24.0",
     "native-base": "^2.12.1",
+    "ramda-fantasy": "^0.8.0",
     "react": "16.8.6",
     "react-native": "0.60.0",
     "react-native-expo-viewport-units": "0.0.8",
