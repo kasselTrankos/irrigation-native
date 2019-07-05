@@ -1,0 +1,10 @@
+export const HOST = 'http://micasitatucasita.com:3000';
+export const ON_LOAD = 'ON_LOAD';
+export const ON_LOAD_SUCCES = 'ON_LOAD_SUCCES';
+export const ON_PUT_DURATION = 'ON_PUT_DURATION';
+export const ON_POST_KALENDAR = 'ON_POST_KALENDAR';
+export const ON_LOAD_ERROR = 'ON_LOAD_ERROR';
+export const SET_DURATION = 'SET_DURATION';
+export const ON_SET_DAY = 'ON_SET_DAY';
+export const ON_GET_DAY = 'ON_GET_DAY';
+export const ON_KALENDAR_DAYS = 'ON_KALENDAR_DAYS';
