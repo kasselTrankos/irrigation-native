@@ -27,10 +27,10 @@ class HeaderCalendar extends Component<Props> {
     onPanResponderRelease: (e, {vx, dx}) => {
       const {width: screenWidth } = Dimensions.get("window");
       if (vx>= 0.5 || dx >= 0.5 * screenWidth) {
-        this.setState(()=>({ week: getPrevWeek()}));;
+        this.setState(()=>({ week: getPrevWeek()}));
       }
       if (vx<= -0.5 || dx <= -0.5 * screenWidth ) {
-        this.setState(()=>({ week: getNextWeek()}));;
+        this.setState(()=>({ week: getNextWeek()}));
       }
       // siempre animate
       Animated.spring(this.translateX, {
