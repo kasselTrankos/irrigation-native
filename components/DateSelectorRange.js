@@ -13,68 +13,57 @@ import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import { arrayExpression } from '@babel/types';
 type Props = {};
 export class DateSelectorRange extends Component<Props> {
+  state = {
+    markedDates: {},
+    beginDate: null,
+    untilDate: null,
+  };
 
   constructor(props) {
     super(props);
-    this.state = {
-      markedDates: {},
-      beginDate: null,
-      untilDate: null,
-    };
   }
-  setRange () {
-    const {beginDate, untilDate} = this.state;
-    format = 'YYYY-MM-DD';
+  setRange (state) {
+    const format = 'YYYY-MM-DD';
+    const {beginDate, untilDate} = state;
+    const selected = {color: 'green', textColor: 'white'};
     const begin = moment(beginDate, format);
-    const until = (untilDate === null) ? start : moment(untilDate, format);
+    const until = (untilDate === null) ? begin : moment(untilDate, format);
     const start = begin.isBefore(until) ? begin : until;
-    console.log(beginDate, 'kkkkk', this.state);
-    console.log('start', start,'begin', begin.format(format));
-    console.log('until', until);
-    // const end = start.isSame(begin) ? until : begin;
-    // const days = start.diff(end, 'days');
-    // const arrdays = Array.from({length: days}, (_, i)=> start.add(i, 'days'));
-    // const marked = arrdays.reduce((acc, el, index, add)=>{
-    //   if(index ===arrayExpression.length -1){
-    //     acc[el.format('YYYY-MM-DD')] = {selected: true, endingDay: true, color: 'green', textColor: 'white'};
-    //   }else {
-    //     acc[el.format('YYYY-MM-DD')] = {color: 'green', textColor: 'white'};
-    //   }
-    //   return acc  
-    // },{[start.format('YYYY-MM-DD')]: {startingDay: true, color: 'green', textColor: 'white'}});
-    // console.log(days, arrdays, marked);
+    
+    const end = start.isSame(begin) ? until : begin;
+    const days = end.diff(start, 'days');
+    const arrdays = Array.from({length: days}, (_, i)=> start.add(1, 'days').format(format));
+    const markedDates = arrdays.reduce((acc, day, index, arr)=>{
+      if(index ===arr.length -1){
+        acc[day] = {selected: true, endingDay: true, ...selected};
+      }else {
+        acc[day] = {...selected};
+      }
+      return acc; 
+    },{[beginDate]: {startingDay: true, ...selected}});
+    this.setState(()=> ({markedDates}))
   }
   selectDay(date) {
     const {beginDate, untilDate} = this.state;
+    const tmp = { beginDate, untilDate};
     const {dateString} = date;
     if(beginDate && untilDate) {
+      tmp.beginDate = dateString; tmp.untilDate = null;
       this.setState(()=> ({untilDate: null, beginDate: dateString}))
     }
     if(beginDate === null) {
-      console.log('set state ');
+      tmp.beginDate = dateString;
       this.setState(()=> ({beginDate: dateString}))
     }
     if(beginDate && untilDate === null) {
+      tmp.untilDate = dateString;
       this.setState(()=> ({untilDate: dateString}))
     }
-    console.log(date, 'dateString is', dateString, beginDate, untilDate);
-    this.setRange();
+    this.setRange(tmp);
   }
   render() {
     const {close, select} = this.props;
-    const {beginDate, untilDate} = this.state;
-    const markedDates = {
-      '2019-07-02': {startingDay: true, color: 'green'},
-      '2019-07-03': {color: 'green'},
-      '2019-07-04': {color: 'green'},
-      '2019-07-05': {color: 'green'},
-      '2019-07-06': {selected: true, endingDay: true, color: 'green', textColor: 'gray'},
-    }
-    // const markedDates = {
-    //   [beginDate]:  {startingDay: true, color: 'green'},
-    //   [untilDate]:  {selected: true, endingDay: true, color: 'green', textColor: 'gray'},
-    // };
-    console.log(markedDates, 'markedDates');
+    const {markedDates} = this.state;
     return (
       <View style={styles.view}>
         <View style={{}}>
