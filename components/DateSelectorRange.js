@@ -17,18 +17,19 @@ export class DateSelectorRange extends Component<Props> {
     beginDate: null,
     untilDate: null,
   };
-
+  
   constructor(props) {
     super(props);
   }
   setRange (state) {
+    const {setRange} = this.props;
     const format = 'YYYY-MM-DD';
     const {beginDate, untilDate} = state;
     const selected = {selected: true, color: 'green', textColor: 'white'};
     const begin = moment(beginDate, format);
     const until = (untilDate === null) ? begin : moment(untilDate, format);
+
     const start = begin.isBefore(until) ? begin : until;
-    
     const end = start.isSame(begin) ? until : begin;
     const days = end.diff(start, 'days');
     const arrdays = Array.from({length: days}, (_, i)=> start.add(1, 'days').format(format));
@@ -41,6 +42,7 @@ export class DateSelectorRange extends Component<Props> {
       return acc; 
     },{[beginDate]: {startingDay: true, ...selected}});
     this.setState(()=> ({markedDates}))
+    setRange(moment(beginDate), end);
   }
   selectDay(date) {
     const {beginDate, untilDate} = this.state;
@@ -61,7 +63,6 @@ export class DateSelectorRange extends Component<Props> {
     this.setRange(tmp);
   }
   render() {
-    const {close, select} = this.props;
     const {markedDates} = this.state;
     return (
       <View style={styles.view}>

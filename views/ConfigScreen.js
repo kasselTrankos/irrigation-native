@@ -71,13 +71,23 @@ class ConfigScreen extends Component<Props> {
       console.warn('Cannot open time picker', message);
     }
   }
+  setRange(start, end) {
+    this.setState(() => ({
+      start: start.format('YYYY-MM-DD'),
+      end: end.format('YYYY-MM-DD')
+    }));
+  }
+  async closeAndTimmer() {
+    this.setState(()=>({showKalendar: false}));
+    await this.showTimer();
+  }
   async setRangeKalendar (start, end) {
+    console.log('startt', start.format('YYYY-MM-DD'), 'end', end.format('YYYY-MM-DD'));
     this.setState(() => ({
       showKalendar: false,
       start: moment(start).format('YYYY-MM-DD'),
       end: end ? moment(end).format('YYYY-MM-DD') : moment(start).format('YYYY-MM-DD')
     }));
-    await this.showTimer();
   }
 
   render() {
@@ -88,16 +98,24 @@ class ConfigScreen extends Component<Props> {
       <View style={styles.view}>
         <Modal
           visible={showKalendar}>
-          <View style={{height:'80%git a'}}>
+          <View style={{height:'90%'}}>
             <DateSelectorRange
-              select={(start, end)=>this.setRangeKalendar(start, end)} />
+              setRange = {this.setRange.bind(this)} />
           </View>  
+          <View style={styles.viewButtonsModal}>
             <Button
-              style={Object.assign({}, styles.button, {marginLeft: '5%'})}
-              onPress={()=>this.setState(()=>({showKalendar: false}))} 
-              info>
-              <Text>Cerrar</Text>
+              style={styles.button}
+              onPress={()=>this.closeAndTimmer()} 
+              success>
+              <Text>Aceptar</Text>
             </Button>
+            <Button
+              style={styles.button}
+              onPress={()=>this.setState(()=>({showKalendar: false}))} 
+              danger>
+              <Text>Cancelar</Text>
+            </Button>
+          </View>
         </Modal>
         <Container>
           <HeaderMenu title="Riego en Casa" {...this.props.navigation} />
@@ -155,6 +173,18 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  viewButtonsModal: {
+    paddingTop: 8 ,
+    flex: 1, 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 1,
   },
   spinner: {
     marginTop: '50%'
