@@ -17,5 +17,3 @@ export const fromEither = real => optional => {
     return cond => compose(is, f)(cond);
   }
 }
-
-// module.exports = {compose, fromEither, add};

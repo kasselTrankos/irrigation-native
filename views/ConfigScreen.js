@@ -88,9 +88,16 @@ class ConfigScreen extends Component<Props> {
       <View style={styles.view}>
         <Modal
           visible={showKalendar}>
-          <DateSelectorRange
-            select={(start, end)=>this.setRangeKalendar(start, end)}
-            close={()=>this.setState(()=>({showKalendar: false}))} />
+          <View style={{height:'80%git a'}}>
+            <DateSelectorRange
+              select={(start, end)=>this.setRangeKalendar(start, end)} />
+          </View>  
+            <Button
+              style={Object.assign({}, styles.button, {marginLeft: '5%'})}
+              onPress={()=>this.setState(()=>({showKalendar: false}))} 
+              info>
+              <Text>Cerrar</Text>
+            </Button>
         </Modal>
         <Container>
           <HeaderMenu title="Riego en Casa" {...this.props.navigation} />

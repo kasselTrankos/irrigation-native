@@ -9,8 +9,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import moment from 'moment';
-import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
-import { arrayExpression } from '@babel/types';
+import { CalendarList } from 'react-native-calendars';
 type Props = {};
 export class DateSelectorRange extends Component<Props> {
   state = {
@@ -25,7 +24,7 @@ export class DateSelectorRange extends Component<Props> {
   setRange (state) {
     const format = 'YYYY-MM-DD';
     const {beginDate, untilDate} = state;
-    const selected = {color: 'green', textColor: 'white'};
+    const selected = {selected: true, color: 'green', textColor: 'white'};
     const begin = moment(beginDate, format);
     const until = (untilDate === null) ? begin : moment(untilDate, format);
     const start = begin.isBefore(until) ? begin : until;
@@ -35,7 +34,7 @@ export class DateSelectorRange extends Component<Props> {
     const arrdays = Array.from({length: days}, (_, i)=> start.add(1, 'days').format(format));
     const markedDates = arrdays.reduce((acc, day, index, arr)=>{
       if(index ===arr.length -1){
-        acc[day] = {selected: true, endingDay: true, ...selected};
+        acc[day] = {endingDay: true, ...selected};
       }else {
         acc[day] = {...selected};
       }
@@ -66,23 +65,20 @@ export class DateSelectorRange extends Component<Props> {
     const {markedDates} = this.state;
     return (
       <View style={styles.view}>
-        <View style={{}}>
         <CalendarList
-          // Callback which gets executed when visible months change in scroll view. Default = undefined
-            onVisibleMonthsChange={(months) => {console.log('now these months are visible', months);}}
-            // Max amount of months allowed to scroll to the past. Default = 50
-            pastScrollRange={50}
-            // Max amount of months allowed to scroll to the future. Default = 50
-            futureScrollRange={50}
-            // Enable or disable scrolling of calendar list
-            scrollEnabled={true}
-            // Enable or disable vertical scroll indicator. Default = false
-            showScrollIndicator={true}
-            markedDates={markedDates}
-            markingType={'period'}
-            onDayPress={day => this.selectDay(day)}
-          />
-        </View>
+        // Callback which gets executed when visible months change in scroll view. Default = undefined
+          onVisibleMonthsChange={(months) => {console.log('now these months are visible', months);}}
+          // Max amount of months allowed to scroll to the past. Default = 50
+          pastScrollRange={50}
+          // Max amount of months allowed to scroll to the future. Default = 50
+          futureScrollRange={50}
+          // Enable or disable scrolling of calendar list
+          scrollEnabled={true}
+          // Enable or disable vertical scroll indicator. Default = false
+          showScrollIndicator={true}
+          markedDates={markedDates}
+          markingType={'period'}
+          onDayPress={day => this.selectDay(day)} />
       </View>
     );
   }
