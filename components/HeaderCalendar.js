@@ -69,7 +69,7 @@ class HeaderCalendar extends Component<Props> {
                 style={Object.assign({}, styles.weekDay, 
                   isToday ? {backgroundColor: '#0583F2'} : {},
                   index === 6 ? {backgroundColor: '#BF5D39'}: {})}>
-                {date.format('DD')}
+                {date.getDate()}
               </Text>
             </AnimatedTouchable>
             )}
