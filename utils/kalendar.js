@@ -46,7 +46,7 @@ export const getDaysBetween = dateA => dateB => {
   return days(dateA);
 }
 export const isBefore = dateA => dateB => isLower.f(dateA, dateB);
-export const YYYMMDD = date => {
+export const YYYYMMDD = date => {
   const year = date.getFullYear();
   const month = date.getMonth() <= 9 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
   const day = date.getDate() <= 9 ? `0${date.getDate()}` : date.getDate();
@@ -58,3 +58,4 @@ export const DDMMYYYY = date => {
   const day = date.getDate() <= 9 ? `0${date.getDate()}` : date.getDate();
   return `${day}/${month}/${year}`;
 }
+export const DD = date => date.getDate() <= 9 ? `0${date.getDate()}` : date.getDate();

@@ -1,6 +1,6 @@
 import {ON_LOAD, ON_POST_KALENDAR, ON_LOAD_ERROR,
   ON_GET_DAY, ON_KALENDAR_DAYS, ON_SET_DATE} from '../constants';
-import moment from 'moment';
+import {YYYYMMDD} from './../utils/kalendar';
 
 const initialState = {
   isFetching: false,
@@ -37,7 +37,7 @@ const config = (state = initialState, action) => {
       error: true
     }
     case ON_GET_DAY:
-      const riegosToday =  getDay(state.days)(action.date.format('YYYY-MM-DD'));
+      const riegosToday =  getDay(state.days)(YYYYMMDD(action.date));
       return {
         ...state,
         riegosToday

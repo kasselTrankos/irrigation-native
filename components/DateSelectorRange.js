@@ -8,7 +8,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
-import {getDaysBetween, isBefore, YYYMMDD} from './../utils/kalendar';
+import {getDaysBetween, isBefore, YYYYMMDD} from './../utils/kalendar';
 import { CalendarList } from 'react-native-calendars';
 type Props = {};
 export class DateSelectorRange extends Component<Props> {
@@ -32,9 +32,9 @@ export class DateSelectorRange extends Component<Props> {
     const end = isBefore(begin)(until) ? until : begin;
     const markedDates = getDaysBetween(start)(end).reduce((acc, {date}, index, arr)=>{
       if(index === arr.length -1){
-        acc[YYYMMDD(date)] = {endingDay: true, ...selected};
+        acc[YYYYMMDD(date)] = {endingDay: true, ...selected};
       }else {
-        acc[YYYMMDD(date)] = {...selected};
+        acc[YYYYMMDD(date)] = {...selected};
       }
       return acc; 
     },{[beginDate]: {startingDay: true, ...selected}});

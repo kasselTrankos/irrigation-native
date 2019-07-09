@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import { StyleSheet, Text, View, Animated, TouchableOpacity,
   PanResponder, Dimensions } from 'react-native';
-import {getWeek, getNextWeek, getMonthName,
-  setToday, getPrevWeek} from './../utils/kalendar';
+import {getWeek, getNextWeek, getMonthName, DD, 
+  getPrevWeek, DDMMYYYY} from './../utils/kalendar';
 import { Content, Button } from 'native-base';
 import {setDay} from './../actions/kalendar';
 import { connect } from 'react-redux';
@@ -14,9 +14,9 @@ const mapDispatchToProps = dispatch => ({
 });
 const Props = {};
 class HeaderCalendar extends Component<Props> {
+  state = {week: getWeek(), day: '', date: null};
   constructor(props) {
     super(props);
-    this.state = {week: getWeek(), day: ''};
   }
 
   translateX = new Animated.Value(0);
@@ -46,15 +46,12 @@ class HeaderCalendar extends Component<Props> {
     return (
       <Content contentContainerStyle={styles.view}>
           <View style={styles.header}>
-            <Text style={styles.monthName}>{getMonthName()}</Text>
-            <Button 
+            <Text style={styles.monthName}>{getMonthName()} {DDMMYYYY(new Date(this.state.date))}</Text>
+            <Button
               style={{textAlign: 'right'}}
               success 
               transparent 
-              onPress={() => {
-                setToday();
-                this.setState(()=> ({week: getWeek()}));
-              }}>
+              onPress={() => {this.setState(()=> ({week: getWeek()}));}}>
               <Text>Today</Text>
             </Button>
           </View>  
@@ -64,12 +61,15 @@ class HeaderCalendar extends Component<Props> {
             { week.map(({date, isToday}, index)=>
             <AnimatedTouchable 
               key={`${date}_d` }
-              onPress={() => setDay(date)}>
+              onPress={() => {
+                setDay(date)
+                this.setState(()=> ({date}));
+              }}>
               <Text 
                 style={Object.assign({}, styles.weekDay, 
                   isToday ? {backgroundColor: '#0583F2'} : {},
                   index === 6 ? {backgroundColor: '#BF5D39'}: {})}>
-                {date.getDate() <= 9 ? `0${date.getDate()}`: date.getDate()}
+                {DD(date)}
               </Text>
             </AnimatedTouchable>
             )}
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   monthName: {
-    width: '50%',
+    width: '70%',
     fontFamily: "ostrich-regular",
     fontSize: 24,
     textAlign: 'center',
