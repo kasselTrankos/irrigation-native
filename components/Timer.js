@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, Animated, View} from 'react-native';
-import { Content } from 'native-base';
-import moment from 'moment';
+import { StyleSheet, View} from 'react-native';
 const Props = {};
 export class Timer extends Component<Props> {
   interval = 0;
@@ -43,12 +41,10 @@ const styles = StyleSheet.create({
     height: '100%',
     marginTop: 0,
     color: '#0E7186',
-    backgroundColor: 'rgba(19, 102, 255, 0.4)',
+    backgroundColor: 'rgba(124, 118, 114, 0.4)',
     fontSize: 30,
   },
   line: {
-    // borderTopEndRadius: 1,
-    // borderTopColor: 'red',
     backgroundColor: 'blue',
   },
 });

@@ -16,11 +16,11 @@ const mapDispatchToProps = dispatch => ({
 const Props = {};
 class HeaderCalendar extends Component<Props> {
   state = {week: getWeek(), day: '', date: new Date()};
+  translateX = new Animated.Value(0);
   constructor(props) {
     super(props);
   }
 
-  translateX = new Animated.Value(0);
   _panResponder = PanResponder.create({
     onMoveShouldSetResponderCapture: () => true,
     onMoveShouldSetPanResponderCapture: (e, {vx, dx}) => vx!=0 && dx!=0,
@@ -121,8 +121,6 @@ const styles = StyleSheet.create({
     marginLeft: 1,
     marginRight: 1,
     borderRadius: 4,
-    opacity: 1,
-    backgroundColor: 'green',
   },
   weekDay: {
     color: '#003087',
