@@ -1,14 +1,12 @@
 import React, {Component} from 'react';
-import moment from 'moment';
+import {getDaysBetween, DDMMYYYY} from './../utils/kalendar';
 import { StyleSheet, Text, View } from 'react-native';
 const Props = {};
 export class RangeDatesText extends Component<Props> {
   getDates() {
     const {start, end, hour, minute } = this.props;
-    const s =  moment(start);
-    const e = moment(end);
-    const diff = Math.abs(s.diff(e, 'days'));
-    const [first, ...dates] = Array.from({length: diff}, (_, i) => moment(start).add(i, 'days')).map(date => moment(date).format('DD/MM/YYYY'));
+    const ranges = getDaysBetween(new Date(start))(new Date(end));
+    const [first, ...dates] = ranges.map(({date})=> `${DDMMYYYY(date)} ${hour}:${minute}`);
     return dates;
   }  
   render() {
@@ -18,14 +16,14 @@ export class RangeDatesText extends Component<Props> {
       <Text style={Object.assign({}, styles.label, styles.dates)}>
         <Text style={styles.important}>desde </Text>
         <Text style={styles.datehour}>
-            {moment(start).format('DD/MM/YYYY')} {hour}:{minute}
+            {DDMMYYYY(new Date(start))} {hour}:{minute}
         </Text>
         </Text>
         <Text>{this.getDates().join(', ')}</Text>
         <Text style={Object.assign({}, styles.label, styles.dates)}>
         <Text style={styles.important}>hasta </Text>
         <Text style={Object.assign({}, styles.datehour)}>
-            {moment(end).format('DD/MM/YYYY')} {hour}:{minute}
+            {DDMMYYYY(new Date(end))} {hour}:{minute}
         </Text>
         </Text>
       </View>

@@ -13,7 +13,6 @@ import { HeaderMenu } from '../components/HeaderMenu';
 import { RangeDatesText } from '../components/RangeDatesText';
 import { DurationSetter } from '../components/DurationSetter';
 import { DateSelectorRange } from '../components/DateSelectorRange';
-import moment from 'moment';
 import {getConfig, setDuration, putDuration} from './../actions/config';
 import {postKalendar} from './../actions/kalendar';
 import { connect } from 'react-redux';
