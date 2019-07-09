@@ -31,7 +31,11 @@
     "socket.io-client": "^2.2.0"
   },
   "devDependencies": {
-    "@babel/core": "7.5.0",
+    "@babel/cli": "^7.5.0",
+    "@babel/core": "^7.5.0",
+    "@babel/node": "^7.5.0",
+    "@babel/preset-env": "^7.5.4",
+    "@babel/register": "^7.4.4",
     "@babel/runtime": "7.5.0",
     "@react-native-community/eslint-config": "0.0.3",
     "babel-jest": "24.8.0",

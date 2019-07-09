@@ -72,10 +72,7 @@ class ConfigScreen extends Component<Props> {
     }
   }
   setRange(start, end) {
-    this.setState(() => ({
-      start: start.format('YYYY-MM-DD'),
-      end: end.format('YYYY-MM-DD')
-    }));
+    this.setState(() => ({start, end}));
   }
   async closeAndTimmer() {
     this.setState(()=>({showKalendar: false}));

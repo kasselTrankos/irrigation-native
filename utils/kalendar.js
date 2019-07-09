@@ -1,4 +1,4 @@
-import {substract, lt, compose, Equivalence, ToDate} from './sanctuary';
+import {substract, lt, compose, Equivalence, ToDate, add} from './sanctuary';
 import {cast, tz, clone, midnight, moveToDate, toDay,
   getDate, plusDays} from './date.utils';
 
@@ -42,7 +42,14 @@ export const getMonthName =  (date = new Date()) => months.es[date.getMonth()];
 export const getWeek = (date = new Date()) => compose(getDaysFrom(7), startWeek)(date);
 
 export const getDaysBetween = dateA => dateB => {
-  const days = compose(getDaysFrom, diffDays(dateA))(dateB);
+  const days = compose(getDaysFrom, compose(add(1), diffDays(dateA)))(dateB);
   return days(dateA);
 }
 export const isBefore = dateA => dateB => isLower.f(dateA, dateB);
+export const YYYMMDD = date => {
+  const year = date.getFullYear();
+  const month = date.getMonth() <= 9 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+  const day = date.getDate() <= 9 ? `0${date.getDate()}` : date.getDate();
+  return `${year}-${month}-${day}`;
+
+}

@@ -9,7 +9,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import moment from 'moment';
-import {getDaysBetween, isBefore} from './../utils/kalendar';
+import {getDaysBetween, isBefore, YYYMMDD} from './../utils/kalendar';
 import { CalendarList } from 'react-native-calendars';
 type Props = {};
 export class DateSelectorRange extends Component<Props> {
@@ -24,33 +24,32 @@ export class DateSelectorRange extends Component<Props> {
   }
   setRange (state) {
     const {setRange} = this.props;
-    const format = 'YYYY-MM-DD';
     const {beginDate, untilDate} = state;
     const selected = {selected: true, color: 'green', textColor: 'white'};
 
     const begin = new Date(beginDate);
     const until = (untilDate === null) ? begin : new Date(untilDate);
-    console.log(begin, until);
     const start = isBefore(begin)(until) ? begin : until;
     const end = isBefore(begin)(until) ? until : begin;
-    console.log(start, end);
+    console.log(start, end, getDaysBetween(start)(end));
     const markedDates = getDaysBetween(start)(end).reduce((acc, {date}, index, arr)=>{
-      if(index ===arr.length -1){
-        acc[date] = {endingDay: true, ...selected};
+      if(index === arr.length -1){
+        acc[YYYMMDD(date)] = {endingDay: true, ...selected};
       }else {
-        acc[date] = {...selected};
+        acc[YYYMMDD(date)] = {...selected};
       }
       return acc; 
     },{[beginDate]: {startingDay: true, ...selected}});
+    console.log(markedDates);
     this.setState(()=> ({markedDates}))
-    setRange(start, end);
+    setRange(beginDate, untilDate ? untilDate : beginDate);
   }
   selectDay(date) {
     const {beginDate, untilDate} = this.state;
     const tmp = { beginDate, untilDate};
     const {dateString} = date;
     if(beginDate && untilDate) {
-      tmp.beginDate = dateString; tmp.untilDate = nll;
+      tmp.beginDate = dateString; tmp.untilDate = null;
       this.setState(()=> ({untilDate: null, beginDate: dateString}))
     }
     if(beginDate === null) {
