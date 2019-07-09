@@ -8,6 +8,8 @@ const truthyEither = c => c ? Either.Right() : Either.Left();
 export const lt = valueA => valueB => valueA < valueB;
 export const compose = (fA, fB) => value => fA(fB(value));
 export const add = valueA => valueB => valueA + valueB;
+export const substract = valueA => valueB => valueA - valueB;
+
 export const fromEither = real => optional => {
   const g = () => real;
   const f = () => optional;

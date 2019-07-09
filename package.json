@@ -4,12 +4,15 @@
   "private": true,
   "scripts": {
     "start": "react-native start",
-    "test": "jest",
+    "test": "mocha",
+    "mocha": "./node_modules/.bin/mocha --require @babel/register ./mocha/",
     "lint": "eslint ."
   },
   "dependencies": {
+    "chai": "^4.2.0",
     "daggy": "^1.4.0",
     "jetifier": "^1.6.1",
+    "mocha": "^6.1.4",
     "moment": "^2.24.0",
     "native-base": "^2.12.1",
     "ramda-fantasy": "^0.8.0",

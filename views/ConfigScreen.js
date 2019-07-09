@@ -81,14 +81,6 @@ class ConfigScreen extends Component<Props> {
     this.setState(()=>({showKalendar: false}));
     await this.showTimer();
   }
-  async setRangeKalendar (start, end) {
-    console.log('startt', start.format('YYYY-MM-DD'), 'end', end.format('YYYY-MM-DD'));
-    this.setState(() => ({
-      showKalendar: false,
-      start: moment(start).format('YYYY-MM-DD'),
-      end: end ? moment(end).format('YYYY-MM-DD') : moment(start).format('YYYY-MM-DD')
-    }));
-  }
 
   render() {
     const {config: {duration, _id, isFetching},

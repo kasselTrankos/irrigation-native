@@ -9,6 +9,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import moment from 'moment';
+import {getDaysBetween, isBefore} from './../utils/kalendar';
 import { CalendarList } from 'react-native-calendars';
 type Props = {};
 export class DateSelectorRange extends Component<Props> {
@@ -26,30 +27,30 @@ export class DateSelectorRange extends Component<Props> {
     const format = 'YYYY-MM-DD';
     const {beginDate, untilDate} = state;
     const selected = {selected: true, color: 'green', textColor: 'white'};
-    const begin = moment(beginDate, format);
-    const until = (untilDate === null) ? begin : moment(untilDate, format);
 
-    const start = begin.isBefore(until) ? begin : until;
-    const end = start.isSame(begin) ? until : begin;
-    const days = end.diff(start, 'days');
-    const arrdays = Array.from({length: days}, (_, i)=> start.add(1, 'days').format(format));
-    const markedDates = arrdays.reduce((acc, day, index, arr)=>{
+    const begin = new Date(beginDate);
+    const until = (untilDate === null) ? begin : new Date(untilDate);
+    console.log(begin, until);
+    const start = isBefore(begin)(until) ? begin : until;
+    const end = isBefore(begin)(until) ? until : begin;
+    console.log(start, end);
+    const markedDates = getDaysBetween(start)(end).reduce((acc, {date}, index, arr)=>{
       if(index ===arr.length -1){
-        acc[day] = {endingDay: true, ...selected};
+        acc[date] = {endingDay: true, ...selected};
       }else {
-        acc[day] = {...selected};
+        acc[date] = {...selected};
       }
       return acc; 
     },{[beginDate]: {startingDay: true, ...selected}});
     this.setState(()=> ({markedDates}))
-    setRange(moment(beginDate), end);
+    setRange(start, end);
   }
   selectDay(date) {
     const {beginDate, untilDate} = this.state;
     const tmp = { beginDate, untilDate};
     const {dateString} = date;
     if(beginDate && untilDate) {
-      tmp.beginDate = dateString; tmp.untilDate = null;
+      tmp.beginDate = dateString; tmp.untilDate = nll;
       this.setState(()=> ({untilDate: null, beginDate: dateString}))
     }
     if(beginDate === null) {

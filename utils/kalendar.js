@@ -1,35 +1,48 @@
-import {lt, add, compose, Equivalence, ToDate} from './sanctuary';
+import {substract, lt, compose, Equivalence, ToDate} from './sanctuary';
+import {cast, tz, clone, midnight, moveToDate, toDay,
+  getDate, plusDays} from './date.utils';
 
 const months = {
   es: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
 }
-const tz = date => new Date(add(date.getTime())(date.getTimezoneOffset() * 60 * 1000 * -1));
-const setMidNight = date => new Date(date.setHours(0,0,0,0));
-const toMidnight = ToDate(x=> new Date(x)).contramap(tz).contramap(setMidNight);
-const isSame = Equivalence((x, y)=>+x === +y);
 
-const startWeek = (date = new Date()) => {
-  const day = date.getDay();
-  const diff = date.getDate() - day + (day == 0 ? -6 : 1);
-  return toMidnight.f(new Date(date.setDate(diff)));
+
+
+const Midnight = ToDate(x=> new Date(x))
+  .contramap(tz).contramap(midnight).contramap(clone);
+const isSame = Equivalence((x, y) => x === y)
+  .contramap(cast).contramap(Midnight.f).contramap(clone);
+const isLower = Equivalence((x, y) => lt(x)(y))
+  .contramap(cast).contramap(tz).contramap(clone);
+
+
+
+const startWeek = (date = new Date()) => 
+  Midnight.f(compose(moveToDate(date), getStartWeek)(date));
+
+const getStartWeek = date => date.getDate() - date.getDay() + (date.getDay() === 0 ? -6 : 1);
+const fillDays = (current = new Date()) => (_,index) => {
+  const date = compose(compose(Midnight.f, plusDays(index)), clone)(current);
+  const isToday = isSame.f(date, new Date())
+  return { date, isToday }
 };
-const addDays = days => (date = new Date()) => toMidnight.f(new Date(date.setDate(date.getDate() + days)));
+const getDaysFrom = (length = 7) => (current = new Date()) =>
+  Array.from({length}, fillDays(current));
 
-const getDaysFrom = (length = 7) => (current = new Date()) => {
-  const fillDays = (_,index) => {
-    const date = compose(addDays(index), startWeek)(current);
-    const isToday = isSame.contramap(toMidnight.f).f(date, new Date())
-    return { date, isToday }
-  };
-  return Array.from({length}, fillDays);
+const diffDays = dateA => dateB => {
+  const startDate = compose(substract, cast)(dateB);
+  return compose(toDay, compose(startDate, cast))(dateA);
 };
 
 
-export const  isBeforeNow  = ({day, hour, minute}) => {
-  const [year, month, _day] = day.split('-');
-  return lt(+new Date(year, month, _day, hour, minute, 0))(+new Date());
-};
-export const getWeek = getDaysFrom(7);
-export const getNextWeek = (date = new Date()) => compose(getWeek, addDays(7))(date);
-export const getPrevWeek = (date = new Date()) => compose(getWeek, addDays(-7))(date);
+export const isBeforeNow  = date => isLower.f(getDate(date), new Date());
+export const getNextWeek = (date = new Date()) => compose(getWeek, plusDays(7))(date);
+export const getPrevWeek = (date = new Date()) => compose(getWeek, plusDays(-7))(date);
 export const getMonthName =  (date = new Date()) => months.es[date.getMonth()];
+export const getWeek = (date = new Date()) => compose(getDaysFrom(7), startWeek)(date);
+
+export const getDaysBetween = dateA => dateB => {
+  const days = compose(getDaysFrom, diffDays(dateA))(dateB);
+  return days(dateA);
+}
+export const isBefore = dateA => dateB => isLower.f(dateA, dateB);
