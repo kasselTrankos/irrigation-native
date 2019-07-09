@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
+import {fromEither} from './../utils';
 import { StyleSheet, Text, View, Animated, TouchableOpacity,
   PanResponder, Dimensions } from 'react-native';
 import {getWeek, getNextWeek, getMonthName, DD, 
-  getPrevWeek, DDMMYYYY} from './../utils/kalendar';
+  getPrevWeek, isSameAs} from './../utils/kalendar';
 import { Content, Button } from 'native-base';
 import {setDay} from './../actions/kalendar';
 import { connect } from 'react-redux';
@@ -14,7 +15,7 @@ const mapDispatchToProps = dispatch => ({
 });
 const Props = {};
 class HeaderCalendar extends Component<Props> {
-  state = {week: getWeek(), day: '', date: null};
+  state = {week: getWeek(), day: '', date: new Date()};
   constructor(props) {
     super(props);
   }
@@ -27,10 +28,10 @@ class HeaderCalendar extends Component<Props> {
     onPanResponderRelease: (e, {vx, dx}) => {
       const {width: screenWidth } = Dimensions.get("window");
       if (vx>= 0.5 || dx >= 0.5 * screenWidth) {
-        this.setState(()=>({ week: getPrevWeek()}));
+        this.setState(()=>({ week: getPrevWeek(new Date(this.state.date))}));
       }
       if (vx<= -0.5 || dx <= -0.5 * screenWidth ) {
-        this.setState(()=>({ week: getNextWeek()}));
+        this.setState(()=>({ week: getNextWeek(new Date(this.state.date))}));
       }
       // siempre animate
       Animated.spring(this.translateX, {
@@ -43,10 +44,13 @@ class HeaderCalendar extends Component<Props> {
     const {week} = this.state;
     const {setDay} = this.props;
     const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
+    const bgDot = fromEither('white')('#dffaff')(isSameAs);
+    const opacityDot = fromEither(0)(1)(isSameAs);
+
     return (
       <Content contentContainerStyle={styles.view}>
           <View style={styles.header}>
-            <Text style={styles.monthName}>{getMonthName()} {DDMMYYYY(new Date(this.state.date))}</Text>
+            <Text style={styles.monthName}>{DD(new Date(this.state.date))} {getMonthName()}</Text>
             <Button
               style={{textAlign: 'right'}}
               success 
@@ -69,8 +73,11 @@ class HeaderCalendar extends Component<Props> {
                 style={Object.assign({}, styles.weekDay, 
                   isToday ? {backgroundColor: '#0583F2'} : {},
                   index === 6 ? {backgroundColor: '#BF5D39'}: {})}>
-                {DD(date)}
+                { DD(date) }
               </Text>
+              <View style={{...styles.dot,
+                backgroundColor : bgDot([this.state.date, date]),
+                opacity: opacityDot([this.state.date, date])}}/>
             </AnimatedTouchable>
             )}
           </View>
@@ -105,8 +112,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  dot: {
+    width: 6,
+    height: 6,
+    top: -10,
+    left: 14,
+    marginTop: 1,
+    marginLeft: 1,
+    marginRight: 1,
+    borderRadius: 4,
+    opacity: 1,
+    backgroundColor: 'green',
+  },
   weekDay: {
-    color: 'white',
+    color: '#003087',
     fontFamily: "ostrich-regular",
     fontSize: 18,
     paddingLeft: 7,

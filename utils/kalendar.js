@@ -58,4 +58,5 @@ export const DDMMYYYY = date => {
   const day = date.getDate() <= 9 ? `0${date.getDate()}` : date.getDate();
   return `${day}/${month}/${year}`;
 }
+export const isSameAs = ([valueA, valueB]) => isSame.f(valueA, valueB);
 export const DD = date => date.getDate() <= 9 ? `0${date.getDate()}` : date.getDate();
