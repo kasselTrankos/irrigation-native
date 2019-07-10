@@ -6,12 +6,12 @@
     "start": "react-native start",
     "test": "mocha",
     "mocha": "./node_modules/.bin/mocha --require @babel/register ./mocha/",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "update": "node update.js"
   },
   "dependencies": {
     "chai": "^4.2.0",
     "daggy": "^1.4.0",
-    "jetifier": "^1.6.1",
     "mocha": "^6.1.4",
     "moment": "^2.24.0",
     "native-base": "^2.12.1",
@@ -28,6 +28,7 @@
     "react-redux": "^7.1.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
+    "replace-in-file": "^4.1.1",
     "socket.io-client": "^2.2.0"
   },
   "devDependencies": {
@@ -41,6 +42,7 @@
     "babel-jest": "24.8.0",
     "eslint": "6.0.1",
     "jest": "24.8.0",
+    "jetifier": "^1.6.1",
     "metro-react-native-babel-preset": "0.54.1",
     "react-test-renderer": "16.8.6"
   },

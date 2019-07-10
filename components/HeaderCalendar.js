@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import {fromEither} from './../utils';
+import {plusDays} from './../utils/date.utils';
+
+import {getWeek, getNextWeek, m, DD, YYYY,
+  getPrevWeek, isSameAs} from './../utils/kalendar';
 import { StyleSheet, Text, View, Animated, TouchableOpacity,
   PanResponder, Dimensions } from 'react-native';
-import {getWeek, getNextWeek, getMonthName, DD, 
-  getPrevWeek, isSameAs} from './../utils/kalendar';
 import { Content, Button } from 'native-base';
 import {setDay} from './../actions/kalendar';
 import { connect } from 'react-redux';
@@ -15,7 +17,7 @@ const mapDispatchToProps = dispatch => ({
 });
 const Props = {};
 class HeaderCalendar extends Component<Props> {
-  state = {week: getWeek(), day: '', date: new Date()};
+  state = {week: getWeek(), day: '', date: new Date(), dayWeek: new Date()};
   translateX = new Animated.Value(0);
   constructor(props) {
     super(props);
@@ -28,10 +30,14 @@ class HeaderCalendar extends Component<Props> {
     onPanResponderRelease: (e, {vx, dx}) => {
       const {width: screenWidth } = Dimensions.get("window");
       if (vx>= 0.5 || dx >= 0.5 * screenWidth) {
-        this.setState(()=>({ week: getPrevWeek(new Date(this.state.date))}));
+        const week = getNextWeek(new Date(this.state.dayWeek));
+        const dayWeek = plusDays(7)(this.state.dayWeek);
+        this.setState(()=>({week, dayWeek}));
       }
       if (vx<= -0.5 || dx <= -0.5 * screenWidth ) {
-        this.setState(()=>({ week: getNextWeek(new Date(this.state.date))}));
+        const week = getPrevWeek(new Date(this.state.dayWeek));
+        const dayWeek = plusDays(-7)(this.state.dayWeek);
+        this.setState(()=>({ week, dayWeek}));
       }
       // siempre animate
       Animated.spring(this.translateX, {
@@ -50,7 +56,7 @@ class HeaderCalendar extends Component<Props> {
     return (
       <Content contentContainerStyle={styles.view}>
           <View style={styles.header}>
-            <Text style={styles.monthName}>{DD(new Date(this.state.date))} {getMonthName()}</Text>
+            <Text style={styles.monthName}>{DD(new Date(this.state.date))} {m(this.state.date)} {YYYY(new Date(this.state.date))}</Text>
             <Button
               style={{textAlign: 'right'}}
               success 

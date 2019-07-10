@@ -7,15 +7,18 @@
  */
 console.ignoredYellowBox = ['Remote debugger'];
 import React, {Component} from 'react';
-import { StyleSheet, View, YellowBox, TouchableOpacity,
-  Animated} from 'react-native';
-import { Button, Text, Container, Content } from 'native-base';
+import { StyleSheet, View, TouchableOpacity,
+  Animated, YellowBox} from 'react-native';
+import { Container, Content } from 'native-base';
 import { WaterIndicator } from '../components/WaterIndicator';
 import { HeaderMenu } from '../components/HeaderMenu';
 import SocketIOClient from 'socket.io-client';
-YellowBox.ignoreWarnings([
-  'Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?'
-]);
+
+console.disableYellowBox = true;
+YellowBox.ignoreWarnings = [
+  'Unrecognized WebSocket connection',
+  'Warning:'
+];
 
 const socket = SocketIOClient('http://micasitatucasita.com:3000');
 

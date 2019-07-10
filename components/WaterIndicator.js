@@ -12,8 +12,10 @@ export class WaterIndicator extends Component<Props> {
     return (
       <View style={styles.container}>
         <View style={styles.cube}>
-          <View style={Object.assign({}, styles.traker, {height: `${volumen}%`})} />
-          <StepsIrrigation style={styles.steps} steps={['3', '2.5', '2', '1.5', '1', '0.5', '0']}/>
+          <View style={{ ...styles.traker, height: `${volumen}%`}} />
+          <StepsIrrigation 
+            style={styles.steps} 
+            steps={['3', '2.5', '2', '1.5', '1', '0.5', '0']}/>
         </View>
       </View>
     );
@@ -51,7 +53,7 @@ const styles = StyleSheet.create({
     left: 0,
     zIndex: 9,
     top: 0,
-    width: 56,
+    width: 70,
     height: 300
   },
   step: {

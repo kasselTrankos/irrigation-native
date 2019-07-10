@@ -14,4 +14,4 @@ export const getDate = date => {
   return new Date(year, month - 1, day, hour, minute, 0);
 }
 export const plusDays = days => (date = new Date()) => 
-  new Date(date.setDate(date.getDate() + days));
+  new Date(clone(date).setDate(date.getDate() + days));

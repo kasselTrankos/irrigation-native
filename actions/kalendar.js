@@ -1,5 +1,5 @@
 import {HOST, ON_LOAD, ON_POST_KALENDAR, ON_KALENDAR_DAYS,
-  ON_SET_DAY, ON_GET_DAY, ON_LOAD_ERROR} from '../constants';
+  ON_GET_DAY, ON_LOAD_ERROR} from '../constants';
 import moment from 'moment';
 // import {GetKalendarDays, PostKalendar} from './../services';
 import {Fetch} from './../services';
@@ -34,4 +34,5 @@ export const getKalendarDays = () => dispatch => {
   Fetch(`${HOST}/kalendar`).then(update).catch(onError);
 };
 export const setDay = date => dispatch => dispatch(onGetDay(date));
+
 export const getDay = date => dispatch => dispatch(onGetDay(date));

@@ -46,6 +46,11 @@ export const getDaysBetween = dateA => dateB => {
   return days(dateA);
 }
 export const isBefore = dateA => dateB => isLower.f(dateA, dateB);
+export const isSameAs = ([valueA, valueB]) => isSame.f(valueA, valueB);
+
+export const DD = date => date.getDate() <= 9 ? `0${date.getDate()}` : date.getDate();
+export const m = date => months.es[date.getMonth()];
+export const YYYY = date => date.getFullYear();
 export const YYYYMMDD = date => {
   const year = date.getFullYear();
   const month = date.getMonth() <= 9 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
@@ -58,5 +63,3 @@ export const DDMMYYYY = date => {
   const day = date.getDate() <= 9 ? `0${date.getDate()}` : date.getDate();
   return `${day}/${month}/${year}`;
 }
-export const isSameAs = ([valueA, valueB]) => isSame.f(valueA, valueB);
-export const DD = date => date.getDate() <= 9 ? `0${date.getDate()}` : date.getDate();
