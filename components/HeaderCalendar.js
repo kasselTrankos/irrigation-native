@@ -61,7 +61,8 @@ class HeaderCalendar extends Component<Props> {
               style={{textAlign: 'right'}}
               success 
               transparent 
-              onPress={() => {this.setState(()=> ({week: getWeek()}));}}>
+              onPress={() => {
+                this.setState(()=> ({week: getWeek(), date: new Date()}));}}>
               <Text>Today</Text>
             </Button>
           </View>  
