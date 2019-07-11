@@ -1,7 +1,7 @@
 import {isBeforeNow, fromEither} from './../utils';
 import React, {Component} from 'react';
 import { StyleSheet, Text, View} from 'react-native';
-import Icon from "react-native-vector-icons/Ionicons";
+import Icon from "react-native-vector-icons/FontAwesome";
 const Props = {};
 export class Irrigation extends Component<Props> {
   render() {
@@ -14,8 +14,8 @@ export class Irrigation extends Component<Props> {
         <Text style={{fontSize: 18, color}}>{hour}:{minute}</Text>
         <Text style={{fontSize: 18, marginLeft: 6, color}}>{duration}'</Text>
         {isBeforeNow(date) 
-          ? <Icon style={{marginRight: 5, right:0, color: '#1A090D'}} name='person' />
-          : <Icon style={{marginRight: 5, right:0, color: '#1A090D'}} name='ei-trash' />
+          ? <Icon style={{marginRight: 5, right:0}} color="#1A090D" name="calendar" size={24} />
+          : <Icon style={{marginRight: 5, right:0}} color="#1A090D" name="trash" size={24} />
         }
       </View>
     );

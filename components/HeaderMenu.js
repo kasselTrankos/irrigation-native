@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import { StyleSheet, View } from 'react-native';
-import { NavigationScreenProp, NavigationState } from 'react-navigation';
-import { Button, Header, Left, Body, Icon, Title, Right} from 'native-base';
+// import { NavigationScreenProp, NavigationState } from 'react-navigation';
+import { Button, Header, Left, Body, Title, Right} from 'native-base';
+import Icon from "react-native-vector-icons/FontAwesome";
 const Props = {};
 export class HeaderMenu extends Component<Props> {
   render() {
@@ -13,7 +14,7 @@ export class HeaderMenu extends Component<Props> {
             <Button 
               onPress = {() => openDrawer()}
               transparent>
-              <Icon name='menu' />
+              <Icon name="rocket" size={24} color="#fff" />
             </Button>
           </Left>
           <Body>
