@@ -25,7 +25,7 @@ class Scheduler extends Component<Props> {
     const {hours, kalendar: {riegosToday}} = this.props;
     return (
       <Content contentContainerStyle={styles.view}>
-        {riegosToday.map(({date, day, hour, minute, duration}, _i) =>
+        {riegosToday.map(({date, day, hour, minute, duration, uuid}, _i) =>
           <View style={{position: 'absolute',
             top: this.top(hour, minute), left: _i % 2 === 0 ? '23%' : '60%', zIndex: 100}}
             key={date}>
@@ -33,6 +33,7 @@ class Scheduler extends Component<Props> {
               hour={hour}
               minute={minute}
               day={day}
+              uuid={uuid}
               duration={duration} />
           </View>
         )}

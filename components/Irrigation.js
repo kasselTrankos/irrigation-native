@@ -1,11 +1,14 @@
 import {isBeforeNow, fromEither} from './../utils';
 import React, {Component} from 'react';
-import { StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome";
 const Props = {};
 export class Irrigation extends Component<Props> {
+  delete (uuid) {
+  }
   render() {
-    const {day, hour, minute, duration} = this.props;
+    const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
+    const {day, hour, minute, duration, uuid} = this.props;
     const date = {day, hour, minute};
     const backgroundColor = fromEither('#9DC7C9')('#2E4057')(isBeforeNow)(date);
     const color = fromEither('#111727')('#D8FAF9')(isBeforeNow)(date);
@@ -15,7 +18,10 @@ export class Irrigation extends Component<Props> {
         <Text style={{fontSize: 18, marginLeft: 6, color}}>{duration}'</Text>
         {isBeforeNow(date) 
           ? <Icon style={{marginRight: 5, right:0}} color="#1A090D" name="calendar" size={24} />
-          : <Icon style={{marginRight: 5, right:0}} color="#1A090D" name="trash" size={24} />
+          : <AnimatedTouchable
+              onPress={() => this.delete(uuid)}>
+              <Icon style={{marginRight: 5, right:0}} color="#1A090D" name="trash" size={24} />
+            </AnimatedTouchable>
         }
       </View>
     );
