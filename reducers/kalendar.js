@@ -1,6 +1,6 @@
 import {ON_LOAD, ON_POST_KALENDAR, ON_LOAD_ERROR,
   ON_GET_DAY, ON_KALENDAR_DAYS, ON_SET_DATE} from '../constants';
-import {YYYYMMDD} from './../utils/kalendar';
+import {YYYYMMDD, isBeforeNow} from './../utils/kalendar';
 
 const initialState = {
   isFetching: false,
@@ -9,7 +9,9 @@ const initialState = {
   days: [],
   riegosToday: []
 }
-const getDay = days => date => days.filter(({day}) => date === day);
+const getDay = days => current => days.filter(date => 
+  current === date.day && !isBeforeNow(date)
+);
 
 const config = (state = initialState, action) => {
   switch (action.type) {
