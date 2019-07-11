@@ -62,7 +62,9 @@ class HeaderCalendar extends Component<Props> {
               success 
               transparent 
               onPress={() => {
-                this.setState(()=> ({week: getWeek(), date: new Date()}));}}>
+                setDay(new Date());
+                this.setState(()=> ({week: getWeek(), date: new Date()}));
+              }}>
               <Text>Today</Text>
             </Button>
           </View>  
@@ -109,7 +111,7 @@ const styles = StyleSheet.create({
   monthName: {
     width: '70%',
     fontFamily: "ostrich-regular",
-    fontSize: 24,
+    fontSize: 22,
     textAlign: 'center',
     paddingLeft: 15,
     marginBottom: 10
