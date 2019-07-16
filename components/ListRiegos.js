@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { fromEither} from './../utils';
+import { DDmYYYY } from './../utils/kalendar';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import images from './../assets/images';
 import moment from 'moment';
@@ -32,26 +33,30 @@ export class ListRiegos extends Component<Props> {
     const borderBottomColor = fromEither('#D6DBDF')('white')(x => x % 2);
     return (
       <Content contentContainerStyle={styles.container}>
-        <Text style={styles.title}>{title}</Text>
         <View style={styles.list}>
-          {this.getItems().map(({riego, date, isDone}, i) =>
-            <View style={{ ...styles.listItem, backgroundColor: backgroundColor(i), borderBottomColor: borderBottomColor(i) }}
+          {this.getItems().map(({riego, date, isDone, duration}, i) =>
+            <View style={{ ...styles.listItem, 
+                backgroundColor: !isDone ? backgroundColor(i) : '#c4ebf9', 
+                borderBottomColor: borderBottomColor(i) }}
                 key={`${i}__como___view`}>
               <Image
                 style={styles.ico}
                 source={images.plant}/>
               {isDone
                 ? <Image 
-                style={styles.check}
-                source={images.checked}/>
+                    style={styles.check}
+                    source={images.done}/>
                 : <Image 
-                  style={styles.check}
-                  source={images.wait}/>
+                    style={styles.check}
+                    source={images.wait}/>
                 }
                 <Content contentContainerStyle={styles.texts}>
-                  <Text style={styles.textRiego}>{riego}</Text>
+                  <Text style={styles.textRiego}>
+                    {DDmYYYY(new Date(date))}
+                  </Text>
                   <Text style={styles.textDate}>
-                  {moment(new Date(date)).format('DD/MM/YYYY H:mm:ss')}</Text>
+                    de {moment(new Date(date)).format('H:mm:ss')} a {moment(new Date(date)).add(duration, 'seconds').format('H:mm:ss')}
+                  </Text>
                 </Content>
             </View>
           )}
@@ -74,12 +79,11 @@ export class ListRiegos extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    marginTop: 10
+    marginTop: 30
   },
   list: {
     width: '80%',
     marginLeft: '10%',
-    marginBottom: 5,
     minHeight: 360,
     marginBottom: 20
   },
@@ -92,21 +96,22 @@ const styles = StyleSheet.create({
   },
   check: {
     position: 'absolute',
-    top: 10,
-    left: 35,
+    top: 40,
+    left: 25,
     zIndex: 100,
-    width:16,
-    height:16
+    width: 30,
+    height: 30,
   },
   textDate: {
     fontFamily: "ostrich-regular",
-    paddingLeft: 15
+    paddingLeft: 15,
+    fontSize: 16,
   },
   textRiego: {
     fontFamily: "ostrich-regular",
     paddingLeft: 15,
     lineHeight: 28,
-    fontSize: 20
+    fontSize: 18,
   },
   title: {
     fontFamily: "PT_Sans-Narrow-Web-Regular",

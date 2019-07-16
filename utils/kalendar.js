@@ -63,3 +63,10 @@ export const DDMMYYYY = date => {
   const day = date.getDate() <= 9 ? `0${date.getDate()}` : date.getDate();
   return `${day}/${month}/${year}`;
 }
+export const DDmYYYY = date => {
+  const year = date.getFullYear();
+  const month = m(date);
+  const day = date.getDate() <= 9 ? `0${date.getDate()}` : date.getDate();
+  return `el ${day} ${month} de ${year}`;
+
+} 
