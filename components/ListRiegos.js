@@ -29,14 +29,14 @@ export class ListRiegos extends Component<Props> {
     const {getPaginagtion }  = this.props;
     const {title ='Los últimos riegos', page = 1} = this.state;
     const pagination = getPaginagtion(page);
-    const backgroundColor = fromEither('#F4F6F6')('white')(x => x % 2);
-    const borderBottomColor = fromEither('#D6DBDF')('white')(x => x % 2);
+    const backgroundColor = fromEither('#EBF5EE')('white')(x => x % 2);
+    const borderBottomColor = fromEither('#CCDAD1')('white')(x => x % 2);
     return (
       <Content contentContainerStyle={styles.container}>
         <View style={styles.list}>
           {this.getItems().map(({riego, date, isDone, duration}, i) =>
             <View style={{ ...styles.listItem, 
-                backgroundColor: !isDone ? backgroundColor(i) : '#c4ebf9', 
+                backgroundColor: backgroundColor(i), 
                 borderBottomColor: borderBottomColor(i) }}
                 key={`${i}__como___view`}>
               <Image
@@ -92,12 +92,13 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     flexDirection: 'row',
     width: '100%',
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
+    paddingLeft: 15,
   },
   check: {
     position: 'absolute',
     top: 40,
-    left: 25,
+    left: 40,
     zIndex: 100,
     width: 30,
     height: 30,
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
   ico: {
     width: 45,
     height: 45,
-    paddingLeft: 8
+    paddingLeft: 22,
   },
   text: {
     color: '#778890'

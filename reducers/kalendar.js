@@ -1,5 +1,5 @@
 import {ON_LOAD, ON_POST_KALENDAR, ON_LOAD_ERROR,
-  ON_GET_DAY, ON_KALENDAR_DAYS, ON_SET_DATE} from '../constants';
+  ON_GET_DAY, ON_KALENDAR_DAYS, ON_SET_DATE, ON_DELETE} from '../constants';
 import {YYYYMMDD, isBeforeNow} from './../utils/kalendar';
 
 const initialState = {
@@ -26,10 +26,12 @@ const config = (state = initialState, action) => {
       isFetching: false
     }
     case ON_KALENDAR_DAYS: 
+    const riegos = getDay(action.days)(YYYYMMDD(new Date()));
     return {
       ...state,
       days: action.days,
-      isFetching: false
+      isFetching: false,
+      riegosToday: riegos
     }
     case ON_SET_DATE:
     return {
@@ -39,10 +41,14 @@ const config = (state = initialState, action) => {
       error: true
     }
     case ON_GET_DAY:
-      const riegosToday =  getDay(state.days)(YYYYMMDD(action.date));
       return {
         ...state,
-        riegosToday
+        riegosToday: getDay(state.days)(YYYYMMDD(action.date))
+      };
+    case ON_DELETE:
+      return {
+        ...state,
+        riegosToday: getDay(state.days)(YYYYMMDD(state.date))
       };
     case ON_LOAD_ERROR:
       return {

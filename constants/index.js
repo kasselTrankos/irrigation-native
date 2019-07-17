@@ -8,3 +8,4 @@ export const SET_DURATION = 'SET_DURATION';
 export const ON_SET_DAY = 'ON_SET_DAY';
 export const ON_GET_DAY = 'ON_GET_DAY';
 export const ON_KALENDAR_DAYS = 'ON_KALENDAR_DAYS';
+export const ON_DELETE = 'ON_DELETE_DAY';

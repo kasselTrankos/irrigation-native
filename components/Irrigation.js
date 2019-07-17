@@ -2,13 +2,22 @@ import {isBeforeNow, fromEither} from './../utils';
 import React, {Component} from 'react';
 import { StyleSheet, Text, View, Animated, TouchableOpacity} from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome";
+import { deleteDay } from './../actions/kalendar';
+import { connect } from 'react-redux';
+
+
+const mapStateToProps = state => ({riegos: state.kalendar});
+const mapDispatchToProps = dispatch => ({
+  deleteDay: uuid => dispatch(deleteDay(uuid))
+});
+
 const Props = {};
-export class Irrigation extends Component<Props> {
-  delete (uuid, date) {
-  }
+
+
+class Irrigation extends Component<Props> {
   render() {
     const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
-    const {day, hour, minute, duration, uuid} = this.props;
+    const {deleteDay, day, hour, minute, duration, uuid} = this.props;
     const date = {day, hour, minute};
     const backgroundColor = fromEither('#9DC7C9')('#2E4057')(isBeforeNow)(date);
     const color = fromEither('#111727')('#D8FAF9')(isBeforeNow)(date);
@@ -16,7 +25,7 @@ export class Irrigation extends Component<Props> {
       <View style={{ ...styles.view, backgroundColor }}>
         <AnimatedTouchable
           style={{ flexDirection: 'row', justifyContent: 'space-between'}}
-          onPress={() => this.delete(uuid, date)}>
+          onPress={() => deleteDay(uuid)}>
           <Text style={{fontSize: 18, color, marginLeft: 12}}>{hour}:{minute}</Text>
           <Text style={{fontSize: 18, marginLeft: 6, color}}>{duration}'</Text>
           {isBeforeNow(date) 
@@ -28,6 +37,7 @@ export class Irrigation extends Component<Props> {
     );
   }
 }
+export default connect(mapStateToProps, mapDispatchToProps)(Irrigation);
 const styles = StyleSheet.create({
   view: {
     flexDirection: 'row',

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { StyleSheet, Text, View} from 'react-native';
 import { formatHour } from './../utils/string';
-import { Irrigation } from './Irrigation';
+import Irrigation from './Irrigation';
 import {Timer} from './Timer';
 import { Content } from 'native-base';
 import {} from './../actions/kalendar';
