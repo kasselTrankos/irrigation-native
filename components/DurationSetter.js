@@ -13,7 +13,7 @@ export class DurationSetter extends Component<Props> {
           value={Number(duration)}
           step={1}
           minimumValue={0}
-          maximumValue={60}
+          maximumValue={120}
           thumbStyle={styles.thumb}
           thumbTintColor="#236EBA"
           minimumTrackTintColor="#2AB7D9"

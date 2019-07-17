@@ -35,7 +35,7 @@ class ConfigScreen extends Component<Props> {
       end: null,
       hour: '',
       minute: '',
-      textDuration: 'Duración (max 60s):'
+      textDuration: 'Duración (max 120s):'
     };
   }
   componentDidMount() {
