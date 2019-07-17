@@ -48,7 +48,6 @@ const config = (state = initialState, action) => {
     case ON_DELETE:
       return {
         ...state,
-        riegosToday: getDay(state.days)(YYYYMMDD(state.date))
       };
     case ON_LOAD_ERROR:
       return {
