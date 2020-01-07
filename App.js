@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, Text, View
+, ScrollView} from 'react-native';
 import {WaterIndicator} from '@ats-components/water-indicator';
 
 const instructions = Platform.select({
@@ -9,14 +10,17 @@ const instructions = Platform.select({
 
 export default class App extends Component {
   render() {
-    let steps = [1,2,3,4];
+    let steps = [1,2,3,4, 9, 10];
     return (
-      <View style={styles.container}>
-        <WaterIndicator steps={steps}/>
-        <Text style={styles.welcome}>Welcome to React Irrigate ono!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-      </View>
+      <ScrollView style={styles.container}>
+        <Text style={styles.welcome}>Irrigate v.01</Text>
+        <View style={styles.containerWater}>
+          <WaterIndicator style={styles.waterIndicator} steps={steps}/>
+        </View>
+        <Text style={styles.welcome}>The ScrollView is a generic scrolling container that can contain multiple components and views. The scrollable items need not be homogeneous, and you can scroll both vertically and horizontally (by setting the horizontal property).
+
+This example creates a vertical ScrollView with both images and text mixed together.1</Text>
+      </ScrollView>
     );
   }
 }
@@ -24,9 +28,16 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    flexDirection: 'column',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    backgroundColor: '#fffffe',
+    marginTop: 20,
+  },
+  containerWater: {
+    position: 'relative',
+    height: 900,
+    
   },
   welcome: {
     fontSize: 20,
@@ -37,5 +48,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
+  },
+  waterIndicator: {
+    position: 'relative',
+    marginTop: 0,
   },
 });
