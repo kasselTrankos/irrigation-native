@@ -12,14 +12,22 @@ export default class App extends Component {
   render() {
     let steps = [1,2,3,4, 9, 10];
     return (
-      <ScrollView style={styles.container}>
-        <Text style={styles.welcome}>Irrigate v.01</Text>
-        <View style={styles.containerWater}>
-          <WaterIndicator style={styles.waterIndicator} steps={steps}/>
-        </View>
-        <Text style={styles.welcome}>The ScrollView is a generic scrolling container that can contain multiple components and views. The scrollable items need not be homogeneous, and you can scroll both vertically and horizontally (by setting the horizontal property).
+      <ScrollView>
+        <View style={styles.container}>
+          <Text style={styles.welcome}>Irrigate v.01</Text>
+          <View style={styles.containerWater}>
+            <WaterIndicator
+              fontSize="10"
+              backgroundColor="#eee"
+              color="#aa33ee"
+              style={styles.waterIndicator} 
+              steps={steps}/>
+          </View>
+          <Text style={styles.welcome}>The ScrollView is a generic scrolling container that can contain multiple components and views. The scrollable items need not be homogeneous, and you can scroll both vertically and horizontally (by setting the horizontal property).
 
-This example creates a vertical ScrollView with both images and text mixed together.1</Text>
+  This example creates a vertical ScrollView with both images and text mixed together.1</Text>
+
+        </View>
       </ScrollView>
     );
   }
@@ -28,15 +36,21 @@ This example creates a vertical ScrollView with both images and text mixed toget
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems:'center',
     flexDirection: 'column',
-    // justifyContent: 'center',
-    // alignItems: 'center',
     backgroundColor: '#fffffe',
     marginTop: 20,
   },
   containerWater: {
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    textAlign: 'center',
     position: 'relative',
-    height: 900,
+    height: 150,
+    width: 245,
     
   },
   welcome: {
