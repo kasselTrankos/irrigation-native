@@ -14,7 +14,7 @@ export default class App extends Component {
     return (
       <ScrollView>
         <View style={styles.container}>
-          <Text style={styles.welcome}>Irrigate v.01</Text>
+          <Text style={styles.welcome}>Irrigate v.01.1</Text>
           <View style={styles.containerWater}>
             <WaterIndicator
               fontSize="10"
@@ -23,10 +23,6 @@ export default class App extends Component {
               style={styles.waterIndicator} 
               steps={steps}/>
           </View>
-          <Text style={styles.welcome}>The ScrollView is a generic scrolling container that can contain multiple components and views. The scrollable items need not be homogeneous, and you can scroll both vertically and horizontally (by setting the horizontal property).
-
-  This example creates a vertical ScrollView with both images and text mixed together.1</Text>
-
         </View>
       </ScrollView>
     );
