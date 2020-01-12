@@ -3,9 +3,15 @@ import {
   TouchableHighlight, StyleSheet, Text, View
   , ScrollView, ActivityIndicator
 } from 'react-native';
+import { YellowBox } from 'react-native'
 import { WaterIndicator } from '@ats-components/water-indicator';
 import Future from './lib/irrigate';
 import SocketIOClient from 'socket.io-client';
+
+YellowBox.ignoreWarnings([
+  'Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?'
+])
+
 const socket = SocketIOClient('http://micasitatucasita.com:3000');
 const madeIrrigation = (msg) => {
   socket.emit('made riego', msg);
@@ -21,8 +27,8 @@ export default class App extends Component {
   state = { isLoading: false };
   toggle() {
     return new Future((_, resolve) => {
-      this.setState(previousState => (
-        { isLoading: !previousState.isLoading }
+      this.setState(previous => (
+        { isLoading: !previous.isLoading }
       ));
       resolve(this.state.isLoading);
     });
