@@ -5,42 +5,63 @@ import {
 } from 'react-native';
 import { YellowBox } from 'react-native'
 import { WaterIndicator } from '@ats-components/water-indicator';
-import Future from './lib/irrigate';
+import {Future, IO} from './lib/irrigate';
 import SocketIOClient from 'socket.io-client';
 
 YellowBox.ignoreWarnings([
   'Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?'
-])
+]);
+
 
 const socket = SocketIOClient('http://micasitatucasita.com:3000');
-const madeIrrigation = (msg) => {
+const madeIrrigation = msg => {
   socket.emit('made riego', msg);
   return new Future((_, resolve) => {
+    socket.off('made riego');
     socket.on('made riego', (msg) => {
       resolve(msg);
     });
   });
-  
-}
+};
+
+
+const second = begin => end => new Date(getTime(end) -getTime(begin)).getSeconds();
+const getTime = date => date.getTime();
 
 export default class App extends Component {
-  state = { isLoading: false };
+  state = { isLoading: false, counter: 0, visibleCounter: false, irrigate: false };
+  delay(time) {
+    const now = new Date();
+    const end = new Date(getTime(now) + (time * 1000));
+    this.setState(() => ({counter: time, visibleCounter: true }));
+    const count = ()=> {
+      const current = new Date();
+      if(getTime(current) < getTime(end)) {
+        this.setState(() => (
+          { counter: second(current)(end)}
+        ));
+        return requestAnimationFrame(count);
+      }
+      this.setState(() => ({ isLoading: false }));
+    };
+    count();
+  };
   toggle() {
-    return new Future((_, resolve) => {
-      this.setState(previous => (
-        { isLoading: !previous.isLoading }
-      ));
-      resolve(this.state.isLoading);
-    });
+    this.setState(previous => (
+      { isLoading: !previous.isLoading, irrigate: true }
+    ));
   }
   _madeIrrigation() {
-    this.toggle().chain(() => madeIrrigation('hola mundo')).chain(() => this.toggle()).fork(err=>err, ok=> console.log(ok));
+    this.toggle();
+    madeIrrigation('hola mundo')
+    .fork(()=>{}, ({duration}) => this.delay(duration));
   }
   _renderSpinner() {
     if (this.state.isLoading) {
       return (<View style={styles.spinner}>
         <View style={styles.spinnerBG}></View>
-        <ActivityIndicator size="large" color="#0000ff" />
+      { this.state.visibleCounter
+        && <Text style={styles.counter}>{this.state.counter}</Text> }
       </View>);
     } else {
       return null;
@@ -97,6 +118,15 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: '#fff',
     opacity: 0.8,
+  },
+  counter: {
+    position: 'absolute',
+    zIndex: 80,
+    color: '#ff0099',
+    fontSize: 100,
+    top: 75,
+    textAlign: 'center',
+    width: '100%',
   },
   button: {
     flex: 1,
