@@ -42,7 +42,7 @@ export default class App extends Component {
         ));
         return requestAnimationFrame(count);
       }
-      this.setState(() => ({ isLoading: false }));
+      this.setState(() => ({ isLoading: false, visibleCounter: false }));
     };
     count();
   };
