@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import app from './data/styles'; 
-import {
-  TouchableHighlight, StyleSheet, Text, View
-  , ScrollView
-} from 'react-native';
+import {TouchableHighlight, StyleSheet, Text, View, ScrollView} from 'react-native';
 import { YellowBox } from 'react-native'
 import {doNothig} from './lib/irrigate';
 import { WaterIndicator } from '@ats-components/water-indicator';
@@ -18,20 +15,15 @@ const emitIrrigation = emit(ID);
 
 export default class App extends Component {
   state = { isLoading: false, counter: 0, visibleCounter: false, irrigate: false };
-  delay(time) {
+  _delay(time) {
     this.setState(() => ({counter: time, visibleCounter: true }));
     cutDown.call(this, time + 1).fork(doNothig, 
       () => this.setState(() => ({ isLoading: false, visibleCounter: false }))
     );
   }
-  toggle() {
-    this.setState(previous => (
-      { isLoading: !previous.isLoading, irrigate: true }
-    ));
-  }
   _madeIrrigation() {
-    this.toggle();
-    emitIrrigation('hola mundo').fork(doNothig, ({duration}) => this.delay(duration));
+    this.setState(previous => ({ isLoading: !previous.isLoading, irrigate: true }));
+    emitIrrigation('hola mundo').fork(doNothig, ({duration}) => this._delay(duration));
   }
   _renderSpinner() {
     return (this.state.isLoading && <View style={styles.spinner}>
@@ -40,7 +32,7 @@ export default class App extends Component {
       </View>);
   }
   render() {
-    let steps = [1, 2, 3, 4, 9, 10];
+    const steps = [1, 2, 3];
     return (
       <ScrollView>
         <View style={styles.container}>
