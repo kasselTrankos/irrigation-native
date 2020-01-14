@@ -13,39 +13,47 @@ YellowBox.ignoreWarnings([
 ]);
 
 
+const second = begin => end => new Date(getTime(end) -getTime(begin)).getSeconds();
+const secondsBetween = end =>  (begin = new Date()) =>
+  new Date(getTime(end) - getTime(begin)).getSeconds();
+const lt =  (current = new Date()) => end => getTime(current) < getTime(end);
+const getTime = date => date.getTime();
+const ID = 'made riego';
 const socket = SocketIOClient('http://micasitatucasita.com:3000');
+const listen = id => fn => socket.off(id) && socket.on(id, fn);
+const onEmitIrrigation = listen(ID);
 const madeIrrigation = msg => {
-  socket.emit('made riego', msg);
+  socket.emit(ID, msg);
+  return new Future((_, resolve) => onEmitIrrigation(msg=> resolve(msg)));
+};
+function cutDownUntil(time) {
+  const end = new Date(getTime(new Date()) + (time * 1000));
+  const secondsFromNow = secondsBetween(end);
   return new Future((_, resolve) => {
-    socket.off('made riego');
-    socket.on('made riego', (msg) => {
-      resolve(msg);
-    });
+    const counter = () => {
+      const isOverNow = lt();
+      if(isOverNow(end)) {
+        this.setState(() => ({ counter: secondsFromNow()}));
+        return requestAnimationFrame(counter);
+      }
+      resolve();
+    }
+    counter();
   });
 };
 
 
-const second = begin => end => new Date(getTime(end) -getTime(begin)).getSeconds();
-const getTime = date => date.getTime();
+
 
 export default class App extends Component {
   state = { isLoading: false, counter: 0, visibleCounter: false, irrigate: false };
   delay(time) {
-    const now = new Date();
-    const end = new Date(getTime(now) + (time * 1000));
     this.setState(() => ({counter: time, visibleCounter: true }));
-    const count = ()=> {
-      const current = new Date();
-      if(getTime(current) < getTime(end)) {
-        this.setState(() => (
-          { counter: second(current)(end)}
-        ));
-        return requestAnimationFrame(count);
-      }
-      this.setState(() => ({ isLoading: false, visibleCounter: false }));
-    };
-    count();
-  };
+    cutDownUntil.call(this, time + 1).fork(
+      () => {}, 
+      () => this.setState(() => ({ isLoading: false, visibleCounter: false }))
+    );
+  }
   toggle() {
     this.setState(previous => (
       { isLoading: !previous.isLoading, irrigate: true }
@@ -57,15 +65,11 @@ export default class App extends Component {
     .fork(()=>{}, ({duration}) => this.delay(duration));
   }
   _renderSpinner() {
-    if (this.state.isLoading) {
-      return (<View style={styles.spinner}>
+    return (this.state.isLoading && <View style={styles.spinner}>
         <View style={styles.spinnerBG}></View>
-      { this.state.visibleCounter
-        && <Text style={styles.counter}>{this.state.counter}</Text> }
+        { this.state.visibleCounter
+          && <Text style={styles.counter}>{this.state.counter}</Text> }
       </View>);
-    } else {
-      return null;
-    }
   }
   render() {
     let steps = [1, 2, 3, 4, 9, 10];
