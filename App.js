@@ -37,7 +37,6 @@ export default class App extends Component {
       <ScrollView>
         <View style={styles.container}>
           {this._renderSpinner()}
-          <Text style={styles.welcome}>Irrigate v.01.1</Text>
           <TouchableHighlight
             syle={styles.button}
             onPress={() => this._madeIrrigation()}
