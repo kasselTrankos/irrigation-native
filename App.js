@@ -6,6 +6,7 @@ import {doNothig} from './lib/irrigate';
 import { WaterIndicator } from '@ats-components/water-indicator';
 import emit from './lib/socket';
 import cutDown from './lib/cutDown';
+import CircleSlider from './CircleSlider';
 
 const ID = 'made riego';
 YellowBox.ignoreWarnings([
@@ -36,7 +37,27 @@ export default class App extends Component {
     return (
       <ScrollView>
         <View style={styles.container}>
+
           {this._renderSpinner()}
+          <View style={{flex: 1, 
+              justifyContent: 'center', 
+              alignItems: 'center',
+              position: 'absolute',
+              toip: 0,
+              top: -20,
+              marginTop: 40}}>
+            <CircleSlider
+              value={90}
+              dialWidth={6}
+              btnRadius={20}
+              meterColor="#05668D"
+              textSize={20}
+              min= {1}
+              max={160}
+              textColor="#EBF2FA"
+            />
+
+            </View>
           <TouchableHighlight
             syle={styles.button}
             onPress={() => this._madeIrrigation()}

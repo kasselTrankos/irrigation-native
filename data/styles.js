@@ -3,9 +3,10 @@ const app = {
     flex: 1,
     alignItems: 'center',
     flexDirection: 'column',
-    backgroundColor: '#fffffe',
-    marginTop: 20,
-    height: '100%',
+    backgroundColor: '#6699CC',
+    marginTop: 0,
+    height: 1200,
+    
   },
   spinner: {
     position: 'absolute',
@@ -40,9 +41,10 @@ const app = {
   },
   containerWater: {
     position: 'relative',
-    height: 200,
-    width: 245,
-
+    height: 180,
+    width: 160,
+    top: 80,
+    
   },
   welcome: {
     fontSize: 20,
