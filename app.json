@@ -29,7 +29,8 @@
     "ios": {
       "supportsTablet": true
     },
-    "entryPoint": "node_modules/expo/AppEntry.js"
+    "entryPoint": "node_modules/expo/AppEntry.js",
+    "description": ""
   },
   "displayName": "irrigationV2",
   "name": "irrigation"
