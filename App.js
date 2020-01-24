@@ -1,5 +1,5 @@
-import React, {useState, useCallback, useReducer,useEffect} from 'react';
-import { StyleSheet, YellowBox, View } from 'react-native';
+import React, {useState} from 'react';
+import { YellowBox, View } from 'react-native';
 import WaterManager from '@ats-components/water-manager';
 import emit from './src/socket';
 import {getTime, secondsBetween, lt} from './src/time';
@@ -19,7 +19,6 @@ YellowBox.ignoreWarnings([
 export default function App() {
   const [disabled, setDisabled] = useState(false);
   const [time, setTime] = useState(15);
-  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const cutDown = duration =>{
     const end = new Date(getTime(new Date()) + (duration * 1000));
@@ -28,10 +27,8 @@ export default function App() {
       const counter = () => {
         if(lt(end)) {
           setTime(secondsFromNow());
-          console.log('222222', time, secondsFromNow());
           return requestAnimationFrame(counter);
         }
-        console.log(time, '3333333');
         resolve();
       }
       counter();
@@ -45,20 +42,22 @@ export default function App() {
     );
   }
   const madeIrrigation = e => {
-    console.log('olo');
     setDisabled(true);
     emitIrrigation('hola mundo').fork(_void, ({duration}) => delay(duration))
   };
   return (
     <View style={{flex: 1, alignContent: 'center'}}>
       <WaterManager
-      strokeWidth={1}
+      strokeWidth={2}
       dialWidth={3}
       strokeColor="#87c0cd"
       disabled={disabled}
       maxDial={90}
       value={time}
-      onPress={madeIrrigation} />
+      onPress={madeIrrigation}
+      fontColor={disabled ? '#5E807F': '#87c0cd'}
+      waterColor= {disabled ? '#B2B2B2' :'#eaf5ff'}
+      dialColor = {disabled ? '#666' : '#3c70a4'} />
     </View>
   );
 }
