@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@ats-components/water-manager@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@ats-components/water-manager/-/water-manager-1.1.0.tgz#0a07b06a62ed25e53fc97ac213788e9b9bb120da"
-  integrity sha512-/gNtXcZS99pHRy1FZfZkMHLVxQvSh9WuoHkBEbbcrcBklG+G/NeqZxfKK1g57OYQGYKtdvFMBc5dqCz+0aeeeg==
+"@ats-components/water-manager@^1.1.4":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@ats-components/water-manager/-/water-manager-1.1.4.tgz#fda293585332c62410da4dcfdd56fb6fec01dad2"
+  integrity sha512-qNUSlg8UQE4Y/jeuuFbP8Y4zgXwMGeAor6i6brztNMsmSYttAvEEOV21yxtTvx2rNg19Uvz5+bzRvK//RmtzSA==
   dependencies:
     expo "~36.0.0"
     react "~16.9.0"

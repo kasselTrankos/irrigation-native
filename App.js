@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback, useReducer,useEffect} from 'react';
 import { StyleSheet, YellowBox, View } from 'react-native';
 import WaterManager from '@ats-components/water-manager';
 import emit from './src/socket';
@@ -15,20 +15,23 @@ YellowBox.ignoreWarnings([
 
 
 
+
 export default function App() {
   const [disabled, setDisabled] = useState(false);
   const [time, setTime] = useState(15);
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
-  const cutDown = (time) =>{
-    const end = new Date(getTime(new Date()) + (time * 1000));
+  const cutDown = duration =>{
+    const end = new Date(getTime(new Date()) + (duration * 1000));
     const secondsFromNow = secondsBetween(end);
     return new Future((_, resolve) => {
       const counter = () => {
         if(lt(end)) {
-          console.log('222222', secondsFromNow());
           setTime(secondsFromNow());
+          console.log('222222', time, secondsFromNow());
           return requestAnimationFrame(counter);
         }
+        console.log(time, '3333333');
         resolve();
       }
       counter();
@@ -36,7 +39,6 @@ export default function App() {
   };
 
   const delay = (duration) => {
-    console.log('111111111', duration);
     cutDown(duration + 1).fork(
       _void, 
       () => setDisabled(false)
