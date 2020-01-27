@@ -2,7 +2,7 @@ import {Future} from './../lib/fp';
 import { CONSTANTS } from './constants';
 
 
-export const get = (path = CONSTANTS.GET_CONFIG) =>new Future((reject, resolve) => 
+export const get = (path = CONSTANTS.GET_CONFIG) => new Future((reject, resolve) => 
   fetch(`${CONSTANTS.HOST}://${CONSTANTS.DOMAIN}:${CONSTANTS.PORT}/${path}`, {
     method: 'GET',
     headers: {

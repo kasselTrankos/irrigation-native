@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@ats-components/water-calendar": "^1.0.4",
     "@ats-components/water-manager": "^1.2.2",
     "@ats-components/water-spiner": "^1.0.2",
     "expo": "~36.0.0",
