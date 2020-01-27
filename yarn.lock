@@ -2,10 +2,22 @@
 # yarn lockfile v1
 
 
-"@ats-components/water-manager@^1.1.4":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@ats-components/water-manager/-/water-manager-1.1.4.tgz#fda293585332c62410da4dcfdd56fb6fec01dad2"
-  integrity sha512-qNUSlg8UQE4Y/jeuuFbP8Y4zgXwMGeAor6i6brztNMsmSYttAvEEOV21yxtTvx2rNg19Uvz5+bzRvK//RmtzSA==
+"@ats-components/water-manager@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@ats-components/water-manager/-/water-manager-1.2.2.tgz#a3e0d3e3f643fc36dba50612694cdf3fbecffa6c"
+  integrity sha512-ZvJz+3aVWtlLsLQEx9Q6hgTGm+SjrR3C/mruzlQTKTX5UmWGHGudqkfxbPUqMFq6ESkxPShARv5yLgeawVxCRA==
+  dependencies:
+    expo "~36.0.0"
+    react "~16.9.0"
+    react-dom "~16.9.0"
+    react-native "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz"
+    react-native-svg "^10.1.0"
+    react-native-web "~0.11.7"
+
+"@ats-components/water-spiner@^1.0.2":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@ats-components/water-spiner/-/water-spiner-1.0.3.tgz#0ce826f6c480edebd141c82c7dff7dabcfc401e9"
+  integrity sha512-SCPtnUyBQSqSEfs2qf2tLCmTKwxhOCoLaMykYIKi20Gq73lVnk8WHl8mE3cmGkDl/qmtf7abEzuKe6iN3bzvlQ==
   dependencies:
     expo "~36.0.0"
     react "~16.9.0"
@@ -1150,9 +1162,9 @@
   integrity sha512-FA/BWv8t8ZWJ+gEOnLLd8ygxH/2UFbAvgEonyfN6yWGLKc7zVjbpl2Y4CTjid9h2RfgPP6SEt6uHwEOply00yw==
 
 "@types/yargs@^13.0.0":
-  version "13.0.6"
-  resolved "https://registry.yarnpkg.com/@types/yargs/-/yargs-13.0.6.tgz#6aed913a92c262c13b94d4bca8043237de202124"
-  integrity sha512-IkltIncDQWv6fcAvnHtJ6KtkmY/vtR3bViOaCzpj/A3yNhlfZAgxNe6AEQD1cQrkYD+YsKVo08DSxvNKEsD7BA==
+  version "13.0.7"
+  resolved "https://registry.yarnpkg.com/@types/yargs/-/yargs-13.0.7.tgz#658d8578a444670a41cc9c338d5e0e0a9910fd9e"
+  integrity sha512-Sg9kNeJz+V+W+0fugcVhHC+mNHnydDR1RJrW5Qn2jVrDQARF8wfPVqIqwEzZp+bneuEBIm2ClsJ1/je42ZBzSg==
   dependencies:
     "@types/yargs-parser" "*"
 
@@ -1674,9 +1686,9 @@ camelcase@^5.0.0, camelcase@^5.3.1:
   integrity sha512-L28STB170nwWS63UjtlEOE3dldQApaJXZkOI1uMFfzf3rRuPegHaHesyee+YxQ+W6SvRDQV6UrdOdRiR153wJg==
 
 caniuse-lite@^1.0.30001022:
-  version "1.0.30001022"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001022.tgz#9eeffe580c3a8f110b7b1742dcf06a395885e4c6"
-  integrity sha512-FjwPPtt/I07KyLPkBQ0g7/XuZg6oUkYBVnPHNj3VHJbOjmmJ/GdSo/GUY6MwINEQvjhP6WZVbX8Tvms8xh0D5A==
+  version "1.0.30001023"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001023.tgz#b82155827f3f5009077bdd2df3d8968bcbcc6fc4"
+  integrity sha512-C5TDMiYG11EOhVOA62W1p3UsJ2z4DsHtMBQtjzp3ZsUglcQn62WOUgW0y795c7A5uZ+GCEIvzkMatLIlAsbNTA==
 
 capture-exit@^2.0.0:
   version "2.0.0"
