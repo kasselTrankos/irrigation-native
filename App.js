@@ -3,14 +3,19 @@ import { YellowBox, View, ScrollView } from 'react-native';
 import WaterManager from '@ats-components/water-manager';
 import Spiner from '@ats-components/water-spiner';
 import Calendar from '@ats-components/water-calendar';
-import emit from './src/socket';
+import {listen, publish} from './src/socket';
 import {getTime, secondsBetween, lt} from './src/time';
-import {Future} from './lib/fp';
+import Task from './lib/task';
 import {get} from './src/query';
 import { CONSTANTS } from './src/constants'; 
 
-const ID = 'made riego';
-const emitIrrigation = emit(ID);
+const IRRIGATE = 'made riego';
+const ON_IRRIGATE = 'on-irrigate'
+const emit = id => on_response => msg => {
+  publish(id)(msg);
+  return new Task((_, resolve) => listen(on_response)(msg=> resolve(msg)));
+};
+const emitIrrigation = emit(IRRIGATE)(ON_IRRIGATE);
 const _void =() => {};
 
 YellowBox.ignoreWarnings([
@@ -18,53 +23,41 @@ YellowBox.ignoreWarnings([
 ]);
 
 
-const cutDown = duration => setTime=>{
+
+const cutDown = setTime => duration => {
   const end = new Date(getTime(new Date()) + (duration * 1000));
   const secondsFromNow = secondsBetween(end);
-  return new Future((_, resolve) => {
+  return new Task((_, resolve) => {
     const counter = () => {
       if(lt(end)) {
         setTime(secondsFromNow());
         return requestAnimationFrame(counter);
       }
-      
-      resolve();
+      resolve(duration);
     }
     counter();
   });
 };
 
-const loadConfig = setTime => setLoading => get(CONSTANTS.CONFIG).fork(
-  err=> console.log(err), 
-  ({duration = 15})=> {
-    setTime(duration);
-    setLoading(false);
-});
-
-
 export default function App() {
   const [disabled, setDisabled] = useState(false);
   const [time, setTime] = useState(15);
   const [loading, setLoading] = useState(true);
-  
 
-  
-
-  const delay = (duration) => {
-    cutDown(duration + 1)(setTime).fork(
-      _void, 
-      () => {
-        setDisabled(false);
-        setTime(duration);
-      }
-    );
-  }
   useEffect(() => {
-    loadConfig(setTime)(setLoading);
+    get(CONSTANTS.CONFIG)
+    .map(x=> x.duration)
+    .map(setTime)
+    .fork(_void, () => setLoading(false));
   }, []);
+
   const madeIrrigation = e => {
     setDisabled(true);
-    emitIrrigation('hola mundo').fork(_void, ({duration}) => delay(duration))
+    emitIrrigation('riego v2')
+    .map(x=> x.duration)
+    .chain(cutDown(setTime))
+    .map(setTime)
+    .fork(_void, () => setDisabled(false));
   };
   return (
     <View style={{flex: 1, alignContent: 'center'}}>

@@ -27,9 +27,9 @@
     react-native-web "~0.11.7"
 
 "@ats-components/water-spiner@^1.0.2":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@ats-components/water-spiner/-/water-spiner-1.0.4.tgz#f32a08a69e25e5af7b2f65a24522ca27d02e4260"
-  integrity sha512-grN6O0efk5JxpkRw0M03MtqZrOcnchklVlyoHc5e5yQoIXKDZpcaxgVoE2dagAOnDM31j+O099iQJlCj5709nA==
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@ats-components/water-spiner/-/water-spiner-1.0.5.tgz#2426f890f368ae22bd2ddb71a63c62855023425a"
+  integrity sha512-gxTeCkVAvPFt+/J2sy4CywGzFPxzJhINEVleX3mcAjHDJZc3P+JFH3s/E+dAXYDRZRryym+yuIlGLkhRpXA6Qw==
   dependencies:
     daggy "^1.4.0"
     expo "~36.0.0"

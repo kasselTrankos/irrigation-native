@@ -1,8 +1,8 @@
-import {Future} from './../lib/fp';
+import Task from './../lib/task';
 import { CONSTANTS } from './constants';
 
 
-export const get = (path = CONSTANTS.GET_CONFIG) => new Future((reject, resolve) => 
+export const get = (path = CONSTANTS.GET_CONFIG) => new Task((reject, resolve) => 
   fetch(`${CONSTANTS.HOST}://${CONSTANTS.DOMAIN}:${CONSTANTS.PORT}/${path}`, {
     method: 'GET',
     headers: {
@@ -11,5 +11,5 @@ export const get = (path = CONSTANTS.GET_CONFIG) => new Future((reject, resolve)
     }
   })
   .then(res => res.json())
-  .then(data =>resolve(data))
-  .catch(err => reject(err)));
+  .then(resolve)
+  .catch(reject));
