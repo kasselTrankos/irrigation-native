@@ -1,4 +1,3 @@
-import {Future} from './../lib/fp';
 export const getTime = date => date.getTime();
 export const secondsBetween = end =>  (begin = new Date()) =>
   new Date(getTime(end) - getTime(begin)).getSeconds();
