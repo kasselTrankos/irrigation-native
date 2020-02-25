@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@ats-components/water-calendar@^1.0.4":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@ats-components/water-calendar/-/water-calendar-1.0.5.tgz#856be3fbfcd74d5317c60eaa639081ede705b4a1"
-  integrity sha512-p9jwUg8ujoHaTk3vvu16Yh5pHY/78XNyoWc8WRTks65xjclxa/1InyHixMT36viPrcvR0+t5lt52uiDkHULL/Q==
+"@ats-components/water-calendar@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@ats-components/water-calendar/-/water-calendar-1.1.0.tgz#380988575b79d18ce7d7f735e32e2ee193dd1a05"
+  integrity sha512-rHo9h1RLSEO3WWuGOvEwTbos4AFCCO99aEhQgXAQwV5W5pUF3YAVfJL/aK9xlK+NRw7SfWu8CIwQoD3SOMDOew==
   dependencies:
     expo "~36.0.0"
     react "~16.9.0"

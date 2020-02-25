@@ -62,7 +62,7 @@ export default function App() {
   return (
     <View style={{flex: 1, alignContent: 'center'}}>
       { loading 
-      ? <View style={{position: 'absolute', top:0}}><Spiner  /></View> 
+      ? <View style={{position: 'absolute', top:'50%', height: '100%'}}><Spiner backgroundColor="#fff" /></View> 
       : <View style={{flex: 1,}}>
           <View style={{ flex:1}}>
             <WaterManager
@@ -77,7 +77,7 @@ export default function App() {
               waterColor= {disabled ? '#B2B2B2' :'#eaf5ff'}
               dialColor = {disabled ? '#666' : '#3c70a4'} /></View>
           <View style={{flex:1, top:0}}>
-            <Calendar top={0} height={140}/></View>
+            <Calendar top={0} height={160}/></View>
       </View>}
     </View>
   );
