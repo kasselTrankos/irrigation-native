@@ -64,18 +64,20 @@ export default function App() {
       { loading 
       ? <View style={{position: 'absolute', top:0}}><Spiner  /></View> 
       : <View style={{flex: 1,}}>
-        <View style={{ flex:1}}><WaterManager
-        strokeWidth={2}
-        dialWidth={3}
-        strokeColor="#87c0cd"
-        disabled={disabled}
-        maxDial={90}
-        value={time}
-        onPress={madeIrrigation}
-        fontColor={disabled ? '#5E807F': '#87c0cd'}
-        waterColor= {disabled ? '#B2B2B2' :'#eaf5ff'}
-        dialColor = {disabled ? '#666' : '#3c70a4'} /></View>
-        <View style={{flex:1, top:0}}><Calendar top={0} /></View>
+          <View style={{ flex:1}}>
+            <WaterManager
+              strokeWidth={2}
+              dialWidth={3}
+              strokeColor="#87c0cd"
+              disabled={disabled}
+              maxDial={90}
+              value={time}
+              onPress={madeIrrigation}
+              fontColor={disabled ? '#5E807F': '#87c0cd'}
+              waterColor= {disabled ? '#B2B2B2' :'#eaf5ff'}
+              dialColor = {disabled ? '#666' : '#3c70a4'} /></View>
+          <View style={{flex:1, top:0}}>
+            <Calendar top={0} height={140}/></View>
       </View>}
     </View>
   );
