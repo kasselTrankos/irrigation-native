@@ -11,7 +11,7 @@ import {listen, publish} from './src/socket';
 
 import {getTime, secondsBetween, lt} from './src/time';
 import Task from './lib/task';
-import {get} from './src/query';
+import {get, post} from './src/query';
 import { CONSTANTS } from './src/constants'; 
 
 const IRRIGATE = 'made riego';
@@ -50,7 +50,7 @@ export default function App() {
     get(CONSTANTS.CONFIG)
     .map(x=> x.duration)
     .map(setTime)
-    .fork(_void, () => setLoading(false));
+    .fork(console.log, () => setLoading(false));
   }, []);
   listen(ON_IRRIGATE)
     .map(prop('duration'))
@@ -64,7 +64,14 @@ export default function App() {
   };
   const selDates = e => {
     dates = [...e];
+    console.log(dates, e);
     setUpdating(true);
+  }
+  const onSave = irrigation => {
+    setLoading(true);
+    console.log(dates, irrigation);
+    post(CONSTANTS.KALENDAR, {dates, irrigation})
+    .fork(console.error, e => setLoading(false))
   }
   return (
     <View style={{flex: 1, alignContent: 'center'}}>
@@ -86,7 +93,7 @@ export default function App() {
               dialColor = {disabled ? '#666' : '#3c70a4'} /></View>
           <View style={{flex:1, top:0,}}>
             <View style={{flex:1}}><Calendar top={0} height={160} onDates={selDates}/></View>
-            {updating &&  <View style={{flex: 1}}><Manager /></View>}
+            {updating &&  <View style={{flex: 1}}><Manager onSave={onSave} /></View>}
           </View>
       </View>}
     </View>
