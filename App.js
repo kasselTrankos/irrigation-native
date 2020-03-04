@@ -33,10 +33,7 @@ const Counter = setTime => {
     if(running) return new Task((reject)=> reject(0)); 
 
     return new Task((_, resolve) => {
-      console.log('made new task');
-      // console.log(running, '1212121221211asd221');
       const counter = () => {
-        // console.log(running, '1212121221211asd221AAAAAAA');
         if(lt(end)) {
           setTime(secondsFromNow());
           return requestAnimationFrame(counter);
@@ -46,8 +43,8 @@ const Counter = setTime => {
       }
       counter();
       running = true;
-      // return ()=> _continue = false
-    });
+      
+    }, ()=> _continue = false);
   }
 };
 
@@ -57,22 +54,23 @@ export default function App() {
   const [disabled, setDisabled] = useState(false);
   const [time, setTime] = useState(15);
   const [loading, setLoading] = useState(true);
+  const toggle = state => x => {
+    setDisabled(state);
+    return x;
+  }
   const [updating, setUpdating] = useState(false);
   useEffect(() => {
     get(CONSTANTS.CONFIG)
       .map(x=> x.duration)
       .map(setTime)
-      .fork(console.error, () => setLoading(false));
-    return function cleanup() {
+      .map(toggle(false))
+      .fork(console.error, _void);
+    return () => {
       console.log('noiuis');
     }
   }, []);
   if(!initialize) {
     const cutDown = Counter(setTime);
-    const toggle = state => x => {
-      setDisabled(state);
-      return x;
-    }
     listen(ON_IRRIGATE)
       .map(prop('duration'))
       .map(toggle(true))
