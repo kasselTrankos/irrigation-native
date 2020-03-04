@@ -14,7 +14,7 @@ export const get = (path = CONSTANTS.CONFIG) => new Task((reject, resolve) =>
   .then(resolve)
   .catch(reject));
 
-export const post = (path = CONSTANTS.KALENDAR. data = {}) => new Task((reject, resolve) => 
+export const post = (path = CONSTANTS.KALENDAR, data = {}) => new Task((reject, resolve) => 
   fetch(`${CONSTANTS.HOST}://${CONSTANTS.DOMAIN}:${CONSTANTS.PORT}/${path}`, {
     method: 'POST',
     cache: 'no-cache',

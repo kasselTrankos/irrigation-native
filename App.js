@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { YellowBox, View, ScrollView } from 'react-native';
+import { YellowBox, View, ScrollView, NativeMethodsMixin } from 'react-native';
 import WaterManager from '@ats-components/water-manager';
 import Spiner from '@ats-components/water-spiner';
 import Calendar from '@ats-components/water-calendar';
@@ -13,31 +13,44 @@ import {getTime, secondsBetween, lt} from './src/time';
 import Task from './lib/task';
 import {get, post} from './src/query';
 import { CONSTANTS } from './src/constants'; 
-
+import { emitNotification } from 'expo/build/Notifications/Notifications';
+let i = 0;
 const IRRIGATE = 'made riego';
 const ON_IRRIGATE = 'on-irrigate';
+const CLOSE = 'cut-and-close';
+let initialize = false;
 const _void =() => {};
 
 YellowBox.ignoreWarnings([
   'Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?'
 ]);
+const mockingbird = fn => (...args) => fn(fn, ...args);
+const Counter = setTime => {
+  let running = false;
+  return duration => {
+    const end = new Date(getTime(new Date()) + (duration * 1000));
+    const secondsFromNow = secondsBetween(end);
+    if(running) return new Task((reject)=> reject(0)); 
 
-
-
-const cutDown = setTime => duration => {
-  const end = new Date(getTime(new Date()) + (duration * 1000));
-  const secondsFromNow = secondsBetween(end);
-  return new Task((_, resolve) => {
-    const counter = () => {
-      if(lt(end)) {
-        setTime(secondsFromNow());
-        return requestAnimationFrame(counter);
+    return new Task((_, resolve) => {
+      console.log('made new task');
+      // console.log(running, '1212121221211asd221');
+      const counter = () => {
+        // console.log(running, '1212121221211asd221AAAAAAA');
+        if(lt(end)) {
+          setTime(secondsFromNow());
+          return requestAnimationFrame(counter);
+        }
+        running = false;
+        resolve(duration);
       }
-      resolve(duration);
-    }
-    counter();
-  });
+      counter();
+      running = true;
+      // return ()=> _continue = false
+    });
+  }
 };
+
 
 export default function App() {
   let dates = [];
@@ -45,34 +58,43 @@ export default function App() {
   const [time, setTime] = useState(15);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
-  
   useEffect(() => {
     get(CONSTANTS.CONFIG)
-    .map(x=> x.duration)
-    .map(setTime)
-    .fork(console.log, () => setLoading(false));
+      .map(x=> x.duration)
+      .map(setTime)
+      .fork(console.error, () => setLoading(false));
+    return function cleanup() {
+      console.log('noiuis');
+    }
   }, []);
-  listen(ON_IRRIGATE)
-    .map(prop('duration'))
-    .chain(cutDown(setTime))
-    .map(setTime)
-    .fork(_void, () => setDisabled(false));
-
+  if(!initialize) {
+    const cutDown = Counter(setTime);
+    const toggle = state => x => {
+      setDisabled(state);
+      return x;
+    }
+    listen(ON_IRRIGATE)
+      .map(prop('duration'))
+      .map(toggle(true))
+      .chain(cutDown)
+      .map(setTime)
+      .map(toggle(false))
+      .fork(_void, _void);
+    }
   const madeIrrigation = e => {
-    setDisabled(true);
+    
     publish(IRRIGATE, 'riego-v3');
   };
   const selDates = e => {
     dates = [...e];
-    console.log(dates, e);
     setUpdating(true);
   }
   const onSave = irrigation => {
     setLoading(true);
-    console.log(dates, irrigation);
     post(CONSTANTS.KALENDAR, {dates, irrigation})
-    .fork(console.error, e => setLoading(false))
+    .fork( console.error, () => setLoading(false))
   }
+  initialize = true;
   return (
     <View style={{flex: 1, alignContent: 'center'}}>
       { loading 

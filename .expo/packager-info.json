@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 25870,
+  "expoServerNgrokUrl": "https://by-y65.kasseltrankos.irrigation-native.exp.direct",
+  "packagerNgrokUrl": "https://packager.by-y65.kasseltrankos.irrigation-native.exp.direct",
+  "ngrokPid": 25948
 }
