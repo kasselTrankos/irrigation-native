@@ -24,6 +24,7 @@ const _void =() => {};
 YellowBox.ignoreWarnings([
   'Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?'
 ]);
+//will be learn 
 const mockingbird = fn => (...args) => fn(fn, ...args);
 const Counter = setTime => {
   let running = false;
@@ -59,16 +60,6 @@ export default function App() {
     return x;
   }
   const [updating, setUpdating] = useState(false);
-  useEffect(() => {
-    get(CONSTANTS.CONFIG)
-      .map(x=> x.duration)
-      .map(setTime)
-      .map(toggle(false))
-      .fork(console.error, _void);
-    return () => {
-      console.log('noiuis');
-    }
-  }, []);
   if(!initialize) {
     const cutDown = Counter(setTime);
     listen(ON_IRRIGATE)
@@ -78,7 +69,16 @@ export default function App() {
       .map(setTime)
       .map(toggle(false))
       .fork(_void, _void);
+  }
+  useEffect(() => {
+    get(CONSTANTS.CONFIG)
+      .map(x=> x.duration)
+      .map(setTime)
+      .fork(console.error, () => setLoading(false));
+    return () => {
+      console.log('noiuis');
     }
+  }, []);
   const madeIrrigation = e => {
     
     publish(IRRIGATE, 'riego-v3');
