@@ -52,6 +52,7 @@ const Counter = setTime => {
 
 export default function App() {
   let dates = [];
+  const [aba, setAba] = useState({hour: '10', minute: '20', second: '00', duration: '00'});
   const [disabled, setDisabled] = useState(false);
   const [time, setTime] = useState(15);
   const [loading, setLoading] = useState(true);
@@ -92,6 +93,9 @@ export default function App() {
     post(CONSTANTS.KALENDAR, {dates, irrigation})
     .fork( console.error, () => setLoading(false))
   }
+  const change = e => {
+    setAba({...e});
+  }
   initialize = true;
   return (
     <View style={{flex: 1, alignContent: 'center'}}>
@@ -113,7 +117,9 @@ export default function App() {
               dialColor = {disabled ? '#666' : '#3c70a4'} /></View>
           <View style={{flex:1, top:0,}}>
             <View style={{flex:1}}><Calendar top={0} height={160} onDates={selDates}/></View>
-            {updating &&  <View style={{flex: 1}}><Manager onSave={onSave} /></View>}
+            {updating &&  <View style={{flex: 1}}>
+              <Manager value={{...aba}} onSave={onSave} onChange={change} update={!disabled}/>
+              </View>}
           </View>
       </View>}
     </View>

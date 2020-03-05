@@ -3,9 +3,9 @@
 
 
 "@ats-components/manager-irrigation@^1.0.1":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@ats-components/manager-irrigation/-/manager-irrigation-1.0.5.tgz#ab12f0df1dfc85fae6ca8390630552a59e2f5559"
-  integrity sha512-9N/dvyUnw5cU+3kT/Umh6MAINLN1UcfGNIAYJOpFkBCeKon3au1frM16l45iUmjvHYCdkvx9JrbSnBQm/yD8nQ==
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@ats-components/manager-irrigation/-/manager-irrigation-1.1.0.tgz#a9d2a8fdacb932b5ffb3b6a6da018abf9df6344f"
+  integrity sha512-c2VVLT0xkiRHx4eGfU8PPCgfFvchQ7vJTUzFOICJ/TSHucJXZRECZCZoF1iJ7yshuI2pZwRK/YfqKCLeCKn39g==
   dependencies:
     expo "~36.0.0"
     react "~16.9.0"
