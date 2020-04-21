@@ -73,7 +73,7 @@ export default function App() {
     get(CONFIG)
       .map(x=> x.duration)
       .map(setTime)
-      .fork((e)=> console.error(e), () => setLoading(false));
+      .fork((e)=> console.log(e, '00000 un erorr re run here '), () => console.log(' continue with it no body must go') || setLoading(false));
     return () => {
       console.log('end use Effect');
     }

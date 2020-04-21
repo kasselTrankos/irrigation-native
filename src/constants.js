@@ -4,6 +4,7 @@ export const CONSTANTS = {
   PORT:'3000',
   CONFIG: 'config',
   KALENDAR: 'kalendar',
+  TIME: 500,
 };
 
 export const KALENDAR =  Object.assign({}, CONSTANTS, {PATH: CONSTANTS.KALENDAR});

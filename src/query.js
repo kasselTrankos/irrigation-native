@@ -7,7 +7,12 @@ export const timer = time => setTimeout(()=> {
   });
 }, time);
 
-export const get = ({HOST, DOMAIN, PORT, PATH}) => new Task((reject, resolve) => 
+export const get = ({HOST, DOMAIN, PORT, PATH, TIME}) => new Task((reject, resolve) => {
+  let _end = false;
+  const timer = setTimeout(()=> {
+    _end = true;
+    reject( 'timer end===')
+  }, TIME);
   fetch(`${HOST}://${DOMAIN}:${PORT}/${PATH}`, {
     method: 'GET',
     headers: {
@@ -16,8 +21,16 @@ export const get = ({HOST, DOMAIN, PORT, PATH}) => new Task((reject, resolve) =>
     }
   })
   .then(res => res.json())
-  .then(resolve)
-  .catch(reject));
+  .then((e)=> {
+    if(!_end) {
+      clearTimeout(timer)
+      resolve(e)
+    } else {
+      reject();
+    }
+  })
+  .catch(reject);
+});
 
 export const post = ({HOST, DOMAIN, PORT, PATH}, data = {}) => new Task((reject, resolve) => 
   fetch(`${HOST}://${DOMAIN}:${PORT}/${PATH}`, {

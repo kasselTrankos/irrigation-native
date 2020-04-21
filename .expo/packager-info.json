@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": "https://ey-z3a.kasseltrankos.irrigation-native.exp.direct",
-  "packagerNgrokUrl": "https://packager.ey-z3a.kasseltrankos.irrigation-native.exp.direct",
-  "ngrokPid": 60240
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 64586,
+  "expoServerNgrokUrl": "https://4d-gaf.kasseltrankos.irrigation-native.exp.direct",
+  "packagerNgrokUrl": "https://packager.4d-gaf.kasseltrankos.irrigation-native.exp.direct",
+  "ngrokPid": 64610
 }
