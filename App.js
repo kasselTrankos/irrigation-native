@@ -12,20 +12,18 @@ import {listen, publish} from './src/socket';
 import {getTime, secondsBetween, lt} from './src/time';
 import Task from './lib/task';
 import {get, post} from './src/query';
-import { CONSTANTS } from './src/constants'; 
-import { emitNotification } from 'expo/build/Notifications/Notifications';
-let i = 0;
+import { KALENDAR, CONFIG, CONSTANTS } from './src/constants'; 
+
+
 const IRRIGATE = 'made riego';
 const ON_IRRIGATE = 'on-irrigate';
-const CLOSE = 'cut-and-close';
 let initialize = false;
-const _void =() => {};
+const _void = () => {};
 
 YellowBox.ignoreWarnings([
   'Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?'
 ]);
 //will be learn 
-const mockingbird = fn => (...args) => fn(fn, ...args);
 const Counter = setTime => {
   let running = false;
   return duration => {
@@ -52,7 +50,7 @@ const Counter = setTime => {
 
 export default function App() {
   let dates = [];
-  const [aba, setAba] = useState({hour: '10', minute: '20', second: '00', duration: '00'});
+  const [dateEdition, setDateEdition] = useState({hour: '10', minute: '20', second: '00', duration: '00'});
   const [disabled, setDisabled] = useState(false);
   const [time, setTime] = useState(15);
   const [loading, setLoading] = useState(true);
@@ -72,12 +70,12 @@ export default function App() {
       .fork(_void, _void);
   }
   useEffect(() => {
-    get(CONSTANTS.CONFIG)
+    get(CONFIG)
       .map(x=> x.duration)
       .map(setTime)
-      .fork(console.error, () => setLoading(false));
+      .fork((e)=> console.error(e), () => setLoading(false));
     return () => {
-      console.log('noiuis');
+      console.log('end use Effect');
     }
   }, []);
   const madeIrrigation = e => {
@@ -90,11 +88,11 @@ export default function App() {
   }
   const onSave = irrigation => {
     setLoading(true);
-    post(CONSTANTS.KALENDAR, {dates, irrigation})
+    post(KALENDAR, {dates, irrigation})
     .fork( console.error, () => setLoading(false))
   }
   const change = e => {
-    setAba({...e});
+    setDateEdition({...e});
   }
   initialize = true;
   return (
@@ -118,7 +116,7 @@ export default function App() {
           <View style={{flex:1, top:0,}}>
             <View style={{flex:1}}><Calendar top={0} height={160} onDates={selDates}/></View>
             {updating &&  <View style={{flex: 1}}>
-              <Manager value={{...aba}} onSave={onSave} onChange={change} update={!disabled}/>
+              <Manager value={{...dateEdition}} onSave={onSave} onChange={change} update={!disabled}/>
               </View>}
           </View>
       </View>}

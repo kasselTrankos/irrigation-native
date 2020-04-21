@@ -3,6 +3,7 @@ import Task from './../lib/task';
 
 
 const socket = io('http://micasitatucasita.com:3000', {forceNew: true});
+
 const listen = id => new Task((_, resolve) => {
   socket.off(id);
   socket.on(id, resolve);

@@ -1,9 +1,14 @@
 import Task from './../lib/task';
-import { CONSTANTS } from './constants';
 
 
-export const get = (path = CONSTANTS.CONFIG) => new Task((reject, resolve) => 
-  fetch(`${CONSTANTS.HOST}://${CONSTANTS.DOMAIN}:${CONSTANTS.PORT}/${path}`, {
+export const timer = time => setTimeout(()=> {
+  new Task((reject)=> {
+    reject('timeout');
+  });
+}, time);
+
+export const get = ({HOST, DOMAIN, PORT, PATH}) => new Task((reject, resolve) => 
+  fetch(`${HOST}://${DOMAIN}:${PORT}/${PATH}`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
@@ -14,8 +19,8 @@ export const get = (path = CONSTANTS.CONFIG) => new Task((reject, resolve) =>
   .then(resolve)
   .catch(reject));
 
-export const post = (path = CONSTANTS.KALENDAR, data = {}) => new Task((reject, resolve) => 
-  fetch(`${CONSTANTS.HOST}://${CONSTANTS.DOMAIN}:${CONSTANTS.PORT}/${path}`, {
+export const post = ({HOST, DOMAIN, PORT, PATH}, data = {}) => new Task((reject, resolve) => 
+  fetch(`${HOST}://${DOMAIN}:${PORT}/${PATH}`, {
     method: 'POST',
     cache: 'no-cache',
     headers: {
