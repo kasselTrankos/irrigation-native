@@ -5,7 +5,7 @@ export const delay = time => {
   let t;
   return new Task((_, resolve)=> {
     t = setTimeout(() => resolve({duration: 34}), time);
-  }, () => clearTimeout(t));
+  }, () => console.log('cancel timer') || clearTimeout(t));
 };
 
 export const get = ({HOST, DOMAIN, PORT, PATH}) => {

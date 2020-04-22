@@ -50,7 +50,7 @@ const Counter = setTime => {
 
 export default function App() {
   let dates = [];
-  const [dateEdition, setDateEdition] = useState({hour: '10', minute: '20', second: '00', duration: '00'});
+  const [dateEdition, setDateEdition] = useState({hour: '10', minute: '22', second: '00', duration: '00'});
   const [disabled, setDisabled] = useState(false);
   const [time, setTime] = useState(15);
   const [loading, setLoading] = useState(true);
@@ -70,13 +70,14 @@ export default function App() {
       .fork(_void, _void);
   }
   useEffect(() => {
+    console.log('called one or twice')
     get(CONFIG)
-      .or(delay(1000).chain(()=> get(CONFIG)))
+      .or(delay(1000).chain(_ => get(RESTART)).chain(()=> get(CONFIG)))
       .map(({duration}) => duration)
       .map(setTime)
       .fork(console.log, () => setLoading(false));
     return () => {
-      console.log('end use Effect');
+      console.log('end use Effect or mpo');
     }
   }, []);
   const madeIrrigation = e => {
@@ -93,7 +94,8 @@ export default function App() {
     .fork( console.error, () => setLoading(false))
   }
   const change = e => {
-    setDateEdition({...e});
+    console.log(e, '000000');
+    // setDateEdition({...e});
   }
   initialize = true;
   return (
