@@ -11,8 +11,8 @@ import {listen, publish} from './src/socket';
 
 import {getTime, secondsBetween, lt} from './src/time';
 import Task from './lib/task';
-import {get, post} from './src/query';
-import { KALENDAR, CONFIG, CONSTANTS } from './src/constants'; 
+import {get, post, delay} from './src/query';
+import { KALENDAR, CONFIG, RESTART, CONSTANTS } from './src/constants'; 
 
 
 const IRRIGATE = 'made riego';
@@ -71,9 +71,10 @@ export default function App() {
   }
   useEffect(() => {
     get(CONFIG)
-      .map(x=> x.duration)
+      .or(delay(1000).chain(()=> get(CONFIG)))
+      .map(({duration}) => duration)
       .map(setTime)
-      .fork((e)=> console.log(e, '00000 un erorr re run here '), () => console.log(' continue with it no body must go') || setLoading(false));
+      .fork(console.log, () => setLoading(false));
     return () => {
       console.log('end use Effect');
     }
