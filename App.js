@@ -4,7 +4,7 @@ import WaterManager from '@ats-components/water-manager';
 import Spiner from '@ats-components/water-spiner';
 import Calendar from '@ats-components/water-calendar';
 import Manager from  '@ats-components/manager-irrigation';
-import {prop} from './lib/fp';
+import {prop, lift2} from './lib/fp';
 
 
 import {listen, publish} from './src/socket';
@@ -23,6 +23,9 @@ const _void = () => {};
 YellowBox.ignoreWarnings([
   'Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?'
 ]);
+const getConfig = get(CONFIG)
+  .or(delay(1000).chain(_ => get(RESTART)).chain(()=> get(CONFIG)));
+const getKalendar = get(KALENDAR);
 //will be learn 
 const Counter = setTime => {
   let running = false;
@@ -50,9 +53,11 @@ const Counter = setTime => {
 
 export default function App() {
   let dates = [];
-  const [dateEdition, setDateEdition] = useState({hour: '10', minute: '22', second: '00', duration: '00'});
+  const [dateEdition, setDateEdition] = useState({hour: '22', minute: '22', second: '00', duration: '18'});
   const [disabled, setDisabled] = useState(false);
-  const [time, setTime] = useState(15);
+  const [irrigations, setIrrigations] = useState([]);
+
+  const [durable, setDuration] = useState(15);
   const [loading, setLoading] = useState(true);
   const toggle = state => x => {
     setDisabled(state);
@@ -60,46 +65,39 @@ export default function App() {
   }
   const [updating, setUpdating] = useState(false);
   if(!initialize) {
-    const cutDown = Counter(setTime);
+    const cutDown = Counter(setDuration);
     listen(ON_IRRIGATE)
       .map(prop('duration'))
       .map(toggle(true))
       .chain(cutDown)
-      .map(setTime)
+      .map(setDuration)
       .map(toggle(false))
       .fork(_void, _void);
   }
   useEffect(() => {
-    console.log('called one or twice')
-    get(CONFIG)
-      .or(delay(1000).chain(_ => get(RESTART)).chain(()=> get(CONFIG)))
-      .map(({duration}) => duration)
-      .map(setTime)
+    
+    lift2(getConfig)(getKalendar)(a => b => ({...a, dates: b}))
+      .map(({duration}) => setDuration(duration))
       .fork(console.log, () => setLoading(false));
     return () => {
-      console.log('end use Effect or mpo');
+      // console.log('end use Effect or mpo');
     }
   }, []);
   const madeIrrigation = e => {
-    
     publish(IRRIGATE, 'riego-v3');
   };
   const selDates = e => {
     dates = [...e];
     setUpdating(true);
   }
-  const onSave = irrigation => {
+  const onSave = e => {
     setLoading(true);
-    post(KALENDAR, {dates, irrigation})
-    .fork( console.error, () => setLoading(false))
-  }
-  const change = e => {
-    console.log(e, '000000');
-    // setDateEdition({...e});
+    post(KALENDAR, {dates, ...e})
+      .fork(console.log, () => setLoading(false))
   }
   initialize = true;
   return (
-    <View style={{flex: 1, alignContent: 'center'}}>
+    <View style={{flex: 1, alignContent: 'center', marginTop: 10}}>
       { loading 
       ? <View style={{position: 'absolute', top:'50%', height: '100%'}}>
           <Spiner backgroundColor="#fff" /></View> 
@@ -111,7 +109,7 @@ export default function App() {
               strokeColor="#87c0cd"
               disabled={disabled}
               maxDial={90}
-              value={time}
+              value={durable}
               onPress={madeIrrigation}
               fontColor={disabled ? '#5E807F': '#87c0cd'}
               waterColor= {disabled ? '#B2B2B2' :'#eaf5ff'}
@@ -119,7 +117,7 @@ export default function App() {
           <View style={{flex:1, top:0,}}>
             <View style={{flex:1}}><Calendar top={0} height={160} onDates={selDates}/></View>
             {updating &&  <View style={{flex: 1}}>
-              <Manager value={{...dateEdition}} onSave={onSave} onChange={change} update={!disabled}/>
+              <Manager value={{...dateEdition}} onSave={onSave} update={!disabled}/>
               </View>}
           </View>
       </View>}

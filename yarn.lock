@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@ats-components/manager-irrigation@^1.0.1":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@ats-components/manager-irrigation/-/manager-irrigation-1.1.0.tgz#a9d2a8fdacb932b5ffb3b6a6da018abf9df6344f"
-  integrity sha512-c2VVLT0xkiRHx4eGfU8PPCgfFvchQ7vJTUzFOICJ/TSHucJXZRECZCZoF1iJ7yshuI2pZwRK/YfqKCLeCKn39g==
+"@ats-components/manager-irrigation@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@ats-components/manager-irrigation/-/manager-irrigation-1.1.2.tgz#ec557352b6e5840e355c11fbc9dc389e3c7c43de"
+  integrity sha512-TOyDf5yufx5UUPhVrOVLli38TTN3faXvZjM1i8YT5tULUgh8JlbpWxEDFtCyooagIncO2C3RFpkpPAJKgc2Byg==
   dependencies:
     expo "~36.0.0"
     react "~16.9.0"

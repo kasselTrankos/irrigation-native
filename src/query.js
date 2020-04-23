@@ -5,7 +5,7 @@ export const delay = time => {
   let t;
   return new Task((_, resolve)=> {
     t = setTimeout(() => resolve({duration: 34}), time);
-  }, () => console.log('cancel timer') || clearTimeout(t));
+  }, () => clearTimeout(t));
 };
 
 export const get = ({HOST, DOMAIN, PORT, PATH}) => {
@@ -24,7 +24,7 @@ export const get = ({HOST, DOMAIN, PORT, PATH}) => {
     .then(res => res.json())
     .then(resolve)
     .catch(reject);
-  }, ()=> console.log('stopdddd posible query') || controller.abort());
+  }, () => controller.abort());
 
 };
 
@@ -33,6 +33,7 @@ export const post = ({HOST, DOMAIN, PORT, PATH}, data = {}) => {
   const {signal} = controller;
 
   return new Task((reject, resolve) => {
+    console.log(`${HOST}://${DOMAIN}:${PORT}/${PATH}`, 'dddd312', data);
     fetch(`${HOST}://${DOMAIN}:${PORT}/${PATH}`, {
       method: 'POST',
       cache: 'no-cache',
@@ -46,6 +47,6 @@ export const post = ({HOST, DOMAIN, PORT, PATH}, data = {}) => {
     .then(res => res.json())
     .then(resolve)
     .catch(reject)
-  }, ()=> controller.abort());
+  }, () => controller.abort());
 };
 
