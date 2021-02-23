@@ -5,7 +5,8 @@ const { prop } = require('ramda')
 import { CircularSpinner} from './elements/circular-spìnner'
 import {CircularManager} from './elements/circular-manager'
 import { getConfig, setConfig } from './lib/services'
-import { set } from 'crocks/core/array';
+const {setTimerDonw} = require('./lib/timer') 
+
 
 
 // log :: String -> a -> a
@@ -21,39 +22,10 @@ const updateConfig = f => duration => setConfig(duration)
 
 export default function App() {
   const [loading, setLoading] = useState(true);
-  const [duration, setDuration] = useState(true);
-  let d= 0
-  useEffect(() => {
-    d = duration
-    console.log(duration, '00000', d)
-
-  }, [duration]);
-  // useEffect(() => {
-  //   counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
-  // }, [duration]);
-  const timer = () => {
-    const onEndreset = duration;
-    let c = duration
-    // console.log('from', reset) 
-    let interval = setInterval(()=> {
-      console.log(c, '123123a')
-      --c
-      setDuration( c)
-      if(c <= 0) {
-        setDuration(onEndreset)
-        clearInterval(interval)
-      }
-    }, 1000)
-  }
-  // let duration = 110
-  // const setDuration = x => {
-  //   log('UP')(x)
-  //   duration = x
-  //   console.log(duration, 'q83vu')
-  // }
+  const [duration, setDuration] = useState(10)
+  const [ managerDisabled, setManagerDisabled] = useState(false) 
   useEffect(()=> {
     loadConfig((x)=>{
-      console.log('LOAD,',x)
       setDuration(x)
       setLoading(false)
     })
@@ -74,16 +46,16 @@ export default function App() {
               backgroundColor="#fff999" />
           : <CircularManager
               top={20}
+              disabled={managerDisabled}
               dialRadius={33}
               dialTextSize={16}
               radius={160}
               value={duration}
               onChange={setDuration}
               onPress={_ => {
-                console.log(d, '9999')
-                timer()
-                // setLoading(true)
-                // updateConfig(loadConfig, duration)
+                setManagerDisabled(true)
+                setTimerDonw(x => setDuration(x), x => setManagerDisabled(false), duration)
+                updateConfig(loadConfig)(duration)
               }} />
         }
     </View>
