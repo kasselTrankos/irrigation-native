@@ -28,7 +28,8 @@ const getDay = date => {
 }
 
 const Calendar = props => {
-  const {
+  
+    const {
     amount = 200,
     startDate = new Date(),
     rows = 7,
@@ -37,11 +38,11 @@ const Calendar = props => {
     activeColor = '#2988B1',
     vibrationDuration = 100,
     passedDay = '#0f4c75',
-    currentDay= '#edf7fa',
+    currentDay = '#edf7fa',
     onDates = ()=>{},
     calHeight = 280,
-    
-  } = props;
+  } = props
+
   const view = useRef();
   const [cellStart, setCellStart] = useState(0);
   const [height, setHeight] = useState(300);

@@ -15,7 +15,9 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "^0.63.4",
+    "react-native-date-picker": "^3.2.10",
     "react-native-elements": "^3.2.0",
+    "react-native-modern-datepicker": "https://github.com/kasselTrankos/react-native-modern-datepicker",
     "react-native-svg": "^12.1.0",
     "react-native-web": "~0.13.12"
   },

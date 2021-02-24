@@ -1,31 +1,48 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from 'react-native-elements'
+
 import { StyleSheet, View } from 'react-native';
-const { prop } = require('ramda')
+const { prop, pipe, curry, __, traverse } = require('ramda')
 import { CircularSpinner} from './elements/circular-spìnner'
 import {CircularManager} from './elements/circular-manager'
-import { getConfig, setConfig } from './lib/services'
+import { getConfig, setConfig, postIrrigate } from './lib/services'
 const {setTimerDonw} = require('./lib/timer') 
-import { Icon } from 'react-native-elements'
 import Calendar from './elements/date-selector'
+import Async from 'crocks/Async';
+const { buttonsTpl, modalTpl } = require('./helpers/tpl')
 
 
 // log :: String -> a -> a
 const log = label => x =>
 (console.log(`${label}:`, x), x)
 
+// loadConfig :: (a -> b) -> Async {} Error
 const loadConfig = f => getConfig()
   .map(prop('duration'))
   .fork(log('00'), f)
 
+// updateConfig -> (a -> b) -> Async {} Error
 const updateConfig = f => duration => setConfig(duration)
-.fork(log('error'), f)
+  .fork(log('error'), f)
+
+
+
+const postIrrigations = (dates, time) =>  
+  traverse(Async.of, pipe(
+    x => new Date(x.setHours(time.hour)).setMinutes(time.minute),
+    postIrrigate(__, time.second)
+  ), dates) 
+  .fork(log('err'), log('succ'))
 
 export default function App() {
   const [loading, setLoading] = useState(true);
 
   const [duration, setDuration] = useState(10)
-  const [ managerDisabled, setManagerDisabled] = useState(false) 
+  const [ managerDisabled, setManagerDisabled] = useState(false)
+  const [ visibleButtons, setVisibleButtons] = useState(false)
+  const [ visibleModal, setVisibleModal] = useState(false)
+  const [ irrgations, setIrrigations] = useState([])
+
+
   useEffect(()=> {
     loadConfig((x)=>{
       setDuration(x)
@@ -37,10 +54,15 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      { visibleModal && modalTpl(x => {
+        setVisibleModal(false)
+        setLoading(true)
+        postIrrigations( irrgations, x)
+      })}
        { loading
           ? <CircularSpinner
               opacity={1}
-              backgroundColor="#fff999" />
+              backgroundColor="#fff" />
           : <View
               style={styles.manager}>
               <CircularManager
@@ -59,12 +81,14 @@ export default function App() {
                   setTimerDonw(x => setDuration(x), x => setManagerDisabled(false), duration)
                   updateConfig(loadConfig)(duration)
               }} />
-                <Calendar style={styles.calendar} />
-                <Button
-                  buttonStyle={{backgroundColor: '#5ca4a9'}}
-                  containerStyle={{  marginBottom:5}}
-                  title="Editar"
-                />
+                <Calendar style={styles.calendar} 
+                  onDates = {(dates)=> {
+                    setIrrigations(dates)
+                    setVisibleButtons(Boolean(dates.length))
+                  }}/>
+                { visibleButtons && buttonsTpl(
+                  () => setVisibleModal(true) 
+                ) }
               </View>
         }
     </View>
@@ -84,7 +108,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    // flexDirection: 'row',
     backgroundColor: '#f7fff7',
     alignItems: 'center',
   },
