@@ -45,5 +45,9 @@ function datetime(d) {
   datetime.prototype.empty = function () {
     return datetime.of(new Date(0));
   }
+
+  datetime.prototype.inspect =function() {
+    return this.value
+  }
   
   module.exports = datetime;
