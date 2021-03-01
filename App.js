@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 const { prop, pipe, curry, __, traverse, lift, chain } = require('ramda')
 import { CircularSpinner} from './elements/circular-spìnner'
 import {CircularManager} from './elements/circular-manager'
+const {CurrentIrrigations} = require('./elements/current-irrigations') 
 import { getConfig, setConfig, postIrrigate, getIrrigations } from './lib/services'
 const {setTimerDonw} = require('./lib/timer') 
 import Calendar from './elements/date-selector'
@@ -93,6 +94,9 @@ export default function App() {
                   setTimerDonw(x => setDuration(x), x => setManagerDisabled(false), duration)
                   setConfig(duration).fork(log('err'), log('succ'))
               }} />
+              <CurrentIrrigations
+                style={styles.current}
+                data={irrigationsCalendar} />
                 <Calendar
                   irrigations={irrigationsCalendar}
                   style={styles.calendar} 
@@ -112,6 +116,10 @@ export default function App() {
 const styles = StyleSheet.create({
   calendar: {
   }, 
+  current: {
+    position: 'absolute',
+    top: 100
+  },
   manager: {    
     flex: 2,
     flexDirection: 'column',

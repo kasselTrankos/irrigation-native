@@ -18,13 +18,16 @@ const getPosition = curry((radius, index, length) => {
  return { x, y: radius * length}
 })
 
+// getRadius :: Number -> Number -> Number
 const getRadius = curry((radius, index) => (radius / 2) / index)
+
 // getSvgCircle :: Number -> Number -> hexadecimal -> Circle
-const getSvgCircle = curry((pos, radius, fill) => (<Circle 
+const getSvgCircle = curry((pos, radius, fill, index) => (<Circle 
   cx={pos.x}
   cy={pos.y}
   r={radius}
   strokeWidth={0}
+  key={index}
   fill={fill} />))
 
 
@@ -55,7 +58,8 @@ const Day = props => {
     x => getSvgCircle(
     getPosition(x, index, irrigations.length),
     x, 
-    getColor(radius, irrigation))
+    getColor(radius, irrigation),
+    index)
   )(irrigation)
   const color = isToday ? currentDay : isPassed? passedDay :  fillColor;
   return <TouchableWithoutFeedback
