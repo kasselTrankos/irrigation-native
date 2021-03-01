@@ -30,10 +30,10 @@ const postIrrigation = curry((date, time) =>  pipe(
 )(date))
 
 // postIrrigations :: [] -> Number -> Async Error []
-const postIrrigations = curry((dates, time) => pipe( 
-  traverse(Async.of, postIrrigation(__, time), dates),
-  chain(getIrrigations)
-))
+const postIrrigations = curry((dates, time) => pipe(
+  () => traverse(Async.of, postIrrigation(__, time), dates),
+  chain(()=> getIrrigations())
+)())
 
 
 
@@ -52,7 +52,6 @@ export default function App() {
   useEffect(()=> {
     initialLoad(
       (duration, irrigations)=> {
-        console.log(duration, irrgations, 'asdhsadfkdsfh')
         setDuration(duration)
         setIrrigationsCalendar(irrigations)
       }, 
@@ -63,13 +62,12 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      { visibleModal && modalTpl(x => {
+      { visibleModal && modalTpl(time => {
         setVisibleModal(false)
         setLoading(true)
-        postIrrigations( irrgations, x)
+        postIrrigations( irrgations, time)
           .fork(log('err'), (irrigations) => {
             setLoading(false)
-            console.log(irrigations, '00sdf0sdfdsf')
             setIrrigationsCalendar(irrigations)
           })
       })}

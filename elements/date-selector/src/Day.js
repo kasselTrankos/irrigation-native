@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text, TouchableWithoutFeedback} from 'react-native';
-import {Svg, Rect, Circle} from 'react-native-svg';
+import {Svg, Rect, Circle} from 'react-native-svg'
 import { curry, prop, pipe, __, lift} from 'ramda'
 
 
@@ -9,17 +9,7 @@ const getPercent = curry((max, value) => ( value * 100 ) / max)
 
 // perc2color -> Number -> hexadecimal
 const  perc2color = (perc) => {
-	var r, g, b = 0;
-	if(perc < 50) {
-		r = 255;
-		g = Math.round(5.1 * perc);
-	}
-	else {
-		g = 255;
-		r = Math.round(510 - 5.10 * perc);
-	}
-	var h = r * 0x10000 + g * 0x100 + b * 0x1;
-	return '#' + ('000000' + h.toString(16)).slice(-6);
+  return `rgb(144, 224, 239, ${perc / 100})`
 }
 
 // getPosition -> Number -> Number -> Number
@@ -33,7 +23,8 @@ const getRadius = curry((radius, index) => (radius / 2) / index)
 const getSvgCircle = curry((pos, radius, fill) => (<Circle 
   cx={pos.x}
   cy={pos.y}
-  r={radius} 
+  r={radius}
+  strokeWidth={0}
   fill={fill} />))
 
 
@@ -55,12 +46,12 @@ const Day = props => {
   const getColor = curry((radius, irrigation) => pipe(
     prop('duration'),
     x => Math.min(radius * 2 - 30, x),
-    getPercent(radius * 2, __),
+    getPercent(130, __),
     perc2color
   )(irrigation))
   // getCircle :: {} -> Number -> React Svg Circle
   const getCircle = (irrigation, index) => pipe(
-    x => getRadius(radius, irrigations.length),
+    () => getRadius(radius, irrigations.length),
     x => getSvgCircle(
     getPosition(x, index, irrigations.length),
     x, 
@@ -69,7 +60,6 @@ const Day = props => {
   const color = isToday ? currentDay : isPassed? passedDay :  fillColor;
   return <TouchableWithoutFeedback
     style={{
-      backgroundColor: 'red',
       width: 100,
       height: 100,
       flex: 1
@@ -77,20 +67,21 @@ const Day = props => {
     onLongPress={onLongPress}
     onPress={()=> onPress(dataId)}
   ><Svg
-      style={{}}
-      width={radius}
-      height={radius}>
-        <Rect
-          x={1}
-          y={1}
-          width={radius}
-          height={radius}
-          fill={color}
-          rx={8}
-        />
-      {irrigations.map(getCircle)}
-      <Text style={{top: radius/2, left: radius/2, color: colorDayText}}>{text}</Text>
-    </Svg></TouchableWithoutFeedback>
+    stroke="#5C73F2"
+    strokeWidth={0.1}
+    width={radius}
+    height={radius}>
+      <Rect
+        x={1}
+        y={1}
+        width={radius}
+        height={radius}
+        fill={color}
+        rx={8}
+      />
+    {irrigations.map(getCircle)}
+    <Text style={{top: radius/2, left: radius/2, color: colorDayText}}>{text}</Text>
+  </Svg></TouchableWithoutFeedback>
 
 };
 

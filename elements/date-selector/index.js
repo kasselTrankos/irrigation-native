@@ -25,7 +25,7 @@ const getDay = date => {
 }
 
 // updateDay :: Number -> {} -> {}
-const updateDay = curry((coord, day) => Object.assign({}, day, {selected: key >= coord && key <= coord}))
+const updateDay = curry((coord, day) => Object.assign({}, day, {selected: day.key >= coord && day.key <= coord}))
 
 // updateDays :: [{}] -> Number -> [{}] 
 const updateDays = curry((days, coord) => days.map(updateDay(coord, __)))
@@ -73,10 +73,8 @@ const Calendar = props => {
 
   const [days, setDays] = useState( Array(amount).fill().map((v, index) => {
     const {day, isToday, isPassed, date} = getDay(startDate)(index);
-    const irrigation = irrigations.filter(isSameDay(date))
     return {
       selected: false,
-      irrigation,
       key: index,
       day, isPassed, isToday, date
     };
@@ -142,19 +140,20 @@ const Calendar = props => {
     ref={view}
     onLayout={onPresent}
     {...panResponde.panHandlers}>
-    {days.map(({selected, key, day, isToday, isPassed, irrigation, date}, index)=> <Day 
+    {days.map(({selected, key, day, isToday, isPassed, date}, index)=> 
+     <Day 
       onLongPress = {handleMultiple}
       onPress = {onPress}
       selected = {selected}
       fillColor = { selected ? activeColor : inactiveColor}
       text = {day}
       passedDay = {passedDay}
-      irrigations = {irrigation}
+      irrigations = {irrigations.filter(isSameDay(date))}
       isToday = {isToday}
       isPassed = {isPassed}
       currentDay={currentDay}
       dataId={key}
-      key={key}
+      key={index}
       colorDayText={colorDayText}
       radius={radius} 
       />)}
