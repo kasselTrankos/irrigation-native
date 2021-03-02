@@ -94,6 +94,7 @@ export default function App() {
         postIrrigations( irrigations, time)
           .fork(log('err'), (irrigations) => {
             setLoading(false)
+            setVisibleButtons(false)
             setIrrigationsCalendar(irrigations)
           })
       }, ()=> setVisibleModal(false))}
@@ -136,8 +137,9 @@ export default function App() {
                     deleteIrrigations(irrigationsCalendar, irrigations)
                       .fork(log('ERROR'), x =>{
                          setLoading(false)
+                         setVisibleButtons(false)
                          setIrrigationsCalendar(x)
-                        })
+                      })
                   }
                 ) }
               </View>
