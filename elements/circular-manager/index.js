@@ -19,7 +19,7 @@ export const CircularManager = (props) => {
     minDial = 0,
     meterColor = '#333',
     onChange = (e)=> {}, 
-    onPress = () => {console.log('is presssed')}, 
+    onPress = () => {}, 
     radius = 100,
     sizes = [1, 2, 3, 'Empty'],
     strokeWidth = 0,
