@@ -15,8 +15,8 @@ const getDay = date => {
   const monday = D.concat(D.map(getMonday));
   return value => {
     const dayAdd = datetime.from(new Date(value * 24 * 60 * 60 * 1000));
-    const currentDay = monday.concat(dayAdd);
-    const isToday = currentDay.map(setMidnight).equals(today.map(setMidnight));
+    const currentDay = monday.concat(dayAdd)
+    const isToday = currentDay.map(setMidnight).equals(today.map(setMidnight))
     return {
       month: currentDay.map(getMonth).value,
       day: currentDay.map(getDate).value,
@@ -130,12 +130,12 @@ const Calendar = props => {
     {days.map(({selected, key, day, isToday, isPassed, date}, index)=> <Day 
       onLongPress={handleMultiple}
       onPress={onPress}
-      selected={selected}
+      selected={ selected }
       fillColor={ selected ? activeColor : inactiveColor}
       text={day}
-      passedDay={passedDay}
-      isToday={isToday}
-      isPassed={isPassed}
+      passedDay={ passedDay }
+      isToday={ isToday }
+      isPassed={ isPassed }
       currentDay={currentDay}
       dataId={key}
       key={key}

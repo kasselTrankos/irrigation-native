@@ -98,7 +98,7 @@ export const CurrentIrrigations = props => {
             width: itemSize,
             opacity: scrollX.interpolate(makeAnimated(1, 0.6, 0.3)),
             transform: [
-              {onDateChange
+              {
                 scale: scrollX.interpolate(makeAnimated(1.5, 0.6, 0.5)),
               },
               {

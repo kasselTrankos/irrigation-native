@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-const { prop, pipe, curry, __, traverse, lift, chain } = require('ramda')
+const { prop, 
+  pipe, flatten, map,
+  curry, __, traverse, 
+  lift, chain } = require('ramda')
 import { CircularSpinner} from './elements/circular-spìnner'
 import {CircularManager} from './elements/circular-manager'
 const {CurrentIrrigations} = require('./elements/current-irrigations') 
-import { getConfig, setConfig, postIrrigate, getIrrigations } from './lib/services'
+import { getConfig, 
+  setConfig, 
+  postIrrigate, 
+  getIrrigations,
+  deleteIrrigate } from './lib/services'
+const { isSameDay, toDate, getTime } = require('./utils/date')
 const {setTimerDonw} = require('./lib/timer') 
 import Calendar from './elements/date-selector'
 import Async from 'crocks/Async';
@@ -36,6 +44,23 @@ const postIrrigations = curry((dates, time) => pipe(
   chain(()=> getIrrigations())
 )())
 
+const irrigationDelete = pipe(
+  prop('date'),
+  toDate,
+  getTime,
+  deleteIrrigate
+)
+
+// deleteIrrigate :: [] -> Async Error []
+const deleteIrrigations = curry((irrigations, dates) => pipe(
+  map(d => irrigations.filter(isSameDay(d))),
+  flatten,
+  x  => traverse(Async.of, irrigationDelete, x),
+  chain(()=> getIrrigations())
+)(dates))
+
+
+
 
 
 
@@ -46,7 +71,7 @@ export default function App() {
   const [ managerDisabled, setManagerDisabled] = useState(false)
   const [ visibleButtons, setVisibleButtons] = useState(false)
   const [ visibleModal, setVisibleModal] = useState(false)
-  const [ irrgations, setIrrigations] = useState([])
+  const [ irrigations, setIrrigations] = useState([])
   const [ irrigationsCalendar, setIrrigationsCalendar] = useState([])
 
 
@@ -66,12 +91,12 @@ export default function App() {
       { visibleModal && modalTpl(time => {
         setVisibleModal(false)
         setLoading(true)
-        postIrrigations( irrgations, time)
+        postIrrigations( irrigations, time)
           .fork(log('err'), (irrigations) => {
             setLoading(false)
             setIrrigationsCalendar(irrigations)
           })
-      })}
+      }, ()=> setVisibleModal(false))}
        { loading
           ? <CircularSpinner
               opacity={1}
@@ -96,16 +121,24 @@ export default function App() {
               }} />
               <CurrentIrrigations
                 style={styles.current}
-                data={irrigationsCalendar} />
+                data={ irrigationsCalendar } />
                 <Calendar
-                  irrigations={irrigationsCalendar}
+                  irrigations = {irrigationsCalendar}
                   style={styles.calendar} 
                   onDates = {(dates)=> {
                     setIrrigations(dates)
                     setVisibleButtons(Boolean(dates.length))
                   }}/>
                 { visibleButtons && buttonsTpl(
-                  () => setVisibleModal(true) 
+                  () => setVisibleModal(true),
+                  () =>{ 
+                    setLoading(true)
+                    deleteIrrigations(irrigationsCalendar, irrigations)
+                      .fork(log('ERROR'), x =>{
+                         setLoading(false)
+                         setIrrigationsCalendar(x)
+                        })
+                  }
                 ) }
               </View>
         }
