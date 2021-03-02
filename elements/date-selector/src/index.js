@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-  import { View, Dimensions, PanResponder, ScrollView, Vibration } from 'react-native';
+import { View, Dimensions, PanResponder, ScrollView, Vibration } from 'react-native';
 import Day from './Day';
 import datetime from './date';
 import {getMonday, getDate, getMonth, setMidnight, min, max} from './utils'
@@ -103,7 +103,6 @@ const Calendar = props => {
     },
     onPanResponderRelease: () => {
       setDragging(true);
-      console.log('0 ahora')
       onDatesSelected();
     },
     onPanResponderTerminationRequest: () => true,

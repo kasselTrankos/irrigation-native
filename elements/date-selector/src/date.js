@@ -27,7 +27,7 @@ function datetime(d) {
   
   // chain :: Chain m =>  m a ~> ( a -> m b) -> m b
   datetime.prototype.chain = function(f) {
-    return datetime.of(this.map(f)).value;
+    return this.map(f).inspect();
   }
   //of :: Aplicative f => f a ~> f -> a -> a
   datetime.of = function (d) {
