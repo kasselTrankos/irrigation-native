@@ -5,7 +5,7 @@ import Async from 'crocks/Async';
 const { prop, 
   pipe, flatten, map,
   curry, __, traverse, 
-  lift, chain } = require('ramda')
+  lift, chain, pipeK } = require('ramda')
 import { CircularSpinner} from './elements/circular-spìnner'
 import {CircularManager} from './elements/circular-manager'
 import Calendar from './elements/date-selector'
@@ -14,8 +14,9 @@ import { getConfig,
   setConfig, 
   postIrrigate, 
   getIrrigations,
-  deleteIrrigate } from './lib/services'
-const { setTimerDonw } = require('./lib/timer') 
+  deleteIrrigate, 
+  setIrrigate} from './lib/services'
+const { countDownTimer } = require('./lib/timer') 
 const { buttonsTpl, modalTpl } = require('./helpers/tpl')
 const { isSameDay, toDate, getTime } = require('./utils/date')
 const { log } = require('./utils')
@@ -58,6 +59,11 @@ const deleteIrrigations = curry((irrigations, dates) => pipe(
   chain(()=> getIrrigations())
 )(dates))
 
+
+const irrigateAndConfig = pipeK(
+  setIrrigate,
+  setConfig,
+)
 
 
 
@@ -116,8 +122,11 @@ export default function App() {
                 onChange={setDuration}
                 onPress={_ => {
                   setManagerDisabled(true)
-                  setTimerDonw(x => setDuration(x), x => setManagerDisabled(false), duration)
-                  setConfig(duration).fork(log('err'), log('succ'))
+                  countDownTimer(
+                    x => setDuration(x), 
+                    () => setManagerDisabled(false), 
+                    duration)
+                  irrigateAndConfig(duration).fork(log('err'), log('succ'))
               }} />
               <CurrentIrrigations
                 style={styles.current}
