@@ -5,9 +5,8 @@
  
 // isSameDaye :: datetime a -> Date b -> Boolean
 export const isSameDay = curry((a, b) => {
-  console.log(b)
-    const dateB = new datetime(new Date(b.date))
-    return a.map(setMidnight).equals(dateB.map(setMidnight))
+  const dateB = new datetime(new Date(b.date))
+  return a.map(setMidnight).equals(dateB.map(setMidnight))
 })
 
 // toDate :: a -> Date
@@ -17,4 +16,5 @@ export const toDate = x => new Date(x)
 export const getTime = d => d.getTime()
 
 
-
+// now :: () -> Date
+export const now = () => new Date()

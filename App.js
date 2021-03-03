@@ -1,28 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
+import Async from 'crocks/Async';
 
 const { prop, 
   pipe, flatten, map,
   curry, __, traverse, 
-  lift, chain } = require('ramda')
+  lift, chain, pipeK } = require('ramda')
 import { CircularSpinner} from './elements/circular-spìnner'
 import {CircularManager} from './elements/circular-manager'
+import Calendar from './elements/date-selector'
 const {CurrentIrrigations} = require('./elements/current-irrigations') 
 import { getConfig, 
   setConfig, 
   postIrrigate, 
   getIrrigations,
-  deleteIrrigate } from './lib/services'
-const { isSameDay, toDate, getTime } = require('./utils/date')
-const {setTimerDonw} = require('./lib/timer') 
-import Calendar from './elements/date-selector'
-import Async from 'crocks/Async';
+  deleteIrrigate, 
+  setIrrigate} from './lib/services'
+const { countDownTimer } = require('./lib/timer') 
 const { buttonsTpl, modalTpl } = require('./helpers/tpl')
+const { isSameDay, toDate, getTime } = require('./utils/date')
+const { log } = require('./utils')
 
 
-// log :: String -> a -> a
-const log = label => x =>
-(console.log(`${label}:`, x), x)
+
 
 // initalLoad :: (a -> b) -> Async {} Error
 const initialLoad = setInitialData => 
@@ -60,6 +60,11 @@ const deleteIrrigations = curry((irrigations, dates) => pipe(
 )(dates))
 
 
+const irrigateAndConfig = pipeK(
+  setIrrigate,
+  setConfig,
+)
+
 
 
 
@@ -91,7 +96,7 @@ export default function App() {
       { visibleModal && modalTpl(time => {
         setVisibleModal(false)
         setLoading(true)
-        postIrrigations( irrigations, time)
+        postIrrigations(irrigations, time)
           .fork(log('err'), (irrigations) => {
             setLoading(false)
             setVisibleButtons(false)
@@ -117,8 +122,11 @@ export default function App() {
                 onChange={setDuration}
                 onPress={_ => {
                   setManagerDisabled(true)
-                  setTimerDonw(x => setDuration(x), x => setManagerDisabled(false), duration)
-                  setConfig(duration).fork(log('err'), log('succ'))
+                  countDownTimer(
+                    x => setDuration(x), 
+                    () => setManagerDisabled(false), 
+                    duration)
+                  irrigateAndConfig(duration).fork(log('err'), log('succ'))
               }} />
               <CurrentIrrigations
                 style={styles.current}

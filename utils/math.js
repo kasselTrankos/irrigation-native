@@ -13,8 +13,13 @@ export const toSafeNumber = x => x ? Number(x) : 0
 // export const findRightBottom = curry((rows, right, bottom) => right + rows * bottom)
 
 // min -> Number -> Number -> Number
-export const min = curry((x, y) => Math.min(x, y));
+export const min = curry((x, y) => Math.min(x, y))
+
 // max -> Number -> Number -> Number
-export const max = curry((x, y) => Math.max(x, y));
+export const max = curry((x, y) => Math.max(x, y))
+
 // floor -> Number -> Number -> Number
-export const floor = curry((x, y) => Math.floor(x, y));
+export const floor = curry((x, y) => Math.floor(x, y))
+
+// round :: Number -> Number
+export const round = x => Math.round(x)
