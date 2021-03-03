@@ -1,5 +1,3 @@
-import { NativeModules } from "react-native";
-
 const curryN = (n, f) => {
   return function curried (...args) {
     return args.length >= n ? f(...args) : (...rest) => curried(...args, ...rest)

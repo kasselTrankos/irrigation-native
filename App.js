@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
+import Async from 'crocks/Async';
 
 const { prop, 
   pipe, flatten, map,
@@ -7,22 +8,20 @@ const { prop,
   lift, chain } = require('ramda')
 import { CircularSpinner} from './elements/circular-spìnner'
 import {CircularManager} from './elements/circular-manager'
+import Calendar from './elements/date-selector'
 const {CurrentIrrigations} = require('./elements/current-irrigations') 
 import { getConfig, 
   setConfig, 
   postIrrigate, 
   getIrrigations,
   deleteIrrigate } from './lib/services'
-const { isSameDay, toDate, getTime } = require('./utils/date')
-const {setTimerDonw} = require('./lib/timer') 
-import Calendar from './elements/date-selector'
-import Async from 'crocks/Async';
+const { setTimerDonw } = require('./lib/timer') 
 const { buttonsTpl, modalTpl } = require('./helpers/tpl')
+const { isSameDay, toDate, getTime } = require('./utils/date')
+const { log } = require('./utils')
 
 
-// log :: String -> a -> a
-const log = label => x =>
-(console.log(`${label}:`, x), x)
+
 
 // initalLoad :: (a -> b) -> Async {} Error
 const initialLoad = setInitialData => 
@@ -91,7 +90,7 @@ export default function App() {
       { visibleModal && modalTpl(time => {
         setVisibleModal(false)
         setLoading(true)
-        postIrrigations( irrigations, time)
+        postIrrigations(irrigations, time)
           .fork(log('err'), (irrigations) => {
             setLoading(false)
             setVisibleButtons(false)

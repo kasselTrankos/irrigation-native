@@ -17,4 +17,5 @@ export const toDate = x => new Date(x)
 export const getTime = d => d.getTime()
 
 
-
+// now :: () -> Date
+export const now = () => new Date()
