@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Animated, Text, FlatList, View, StyleSheet, Dimensions } from 'react-native';
 const { pipe, prop, map, is,add } = require('ramda')
-import Arrow from 'crocks/Arrow'
 import Either from 'crocks/Either'
 import either from 'crocks/pointfree/either'
 
@@ -23,13 +22,28 @@ const day =  pipe(
   addZero
 )
 const getMonth = x => x.getMonth()
+const getHours = x => x.getHours()
+const getMinutes = x => x.getMinutes()
+
 const month = pipe(
   getMonth,
   add(1),
   addZero
 )
 
-const formatDate  = x => `${day(x)}/${month(x)} ${x.getHours()}:${x.getMinutes()}`
+const hours = pipe(
+  getHours,
+  addZero
+)
+const minutes = pipe(
+  getMinutes,
+  addZero
+)
+
+
+
+// formatDate :: Date -> String
+const formatDate = x => `${day(x)}/${month(x)} ${hours(x)}:${minutes(x)}`
 
 
 
